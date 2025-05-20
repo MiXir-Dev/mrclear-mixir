@@ -1,0 +1,212 @@
+
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Phone, Menu, Mail } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+
+const Header = () => {
+  const [isSticky, setIsSticky] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Mark that we've started scrolling to prevent initial animation glitch
+      if (!hasScrolled) {
+        setHasScrolled(true);
+      }
+      
+      if (window.scrollY > 50) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasScrolled]);
+
+  const handleNavigation = (id: string) => {
+    // Close the menu
+    setIsOpen(false);
+    
+    // Smooth scroll to the section
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start' 
+      });
+    }
+  };
+
+  return (
+    <header 
+      className={`w-full bg-white py-4 shadow-sm ${
+        hasScrolled ? "transition-all duration-300" : ""
+      } ${isSticky ? "sticky top-0 z-50 py-2 shadow-md" : ""}`}
+    >
+      <div className="container mx-auto flex items-center justify-between">
+        <div className="flex items-center">
+          <a href="#" className="flex items-center">
+            <span className="text-brand-blue font-bold text-xl md:text-2xl">Mr. Clear</span>
+          </a>
+        </div>
+
+        {/* Menu desktop */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <a 
+            href="#services" 
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('services');
+            }}
+            className="text-gray-700 hover:text-brand-blue font-medium"
+          >
+            Nos Services
+          </a>
+          <a 
+            href="#pourquoi-nous" 
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('pourquoi-nous');
+            }}
+            className="text-gray-700 hover:text-brand-blue font-medium"
+          >
+            Pourquoi Nous
+          </a>
+          <a 
+            href="#faq" 
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('faq');
+            }}
+            className="text-gray-700 hover:text-brand-blue font-medium"
+          >
+            FAQ
+          </a>
+          <a 
+            href="#contact" 
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation('contact');
+            }}
+            className="text-gray-700 hover:text-brand-blue font-medium"
+          >
+            Contact
+          </a>
+          <Button 
+            onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+            className="cta-button"
+          >
+            Obtenir un devis
+          </Button>
+        </nav>
+
+        {/* Menu mobile drawer */}
+        <div className="md:hidden flex items-center">
+          <a href="tel:+15142666151" className="mr-4 bg-brand-blue text-white p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
+            <Phone size={20} />
+          </a>
+          
+          <a href="mailto:mrclear.homeservices@gmail.com" className="mr-4 bg-brand-blue text-white p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
+            <Mail size={20} />
+          </a>
+          
+          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Menu className="w-6 h-6" />
+                <span className="sr-only">Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent 
+              side="left" 
+              className="w-full p-0 transition-transform duration-300 ease-in-out"
+            >
+              <SheetHeader className="p-4 border-b border-gray-100">
+                <SheetTitle>
+                  <a href="#" className="flex items-center justify-center">
+                    <span className="text-brand-blue font-bold text-xl">Mr. Clear</span>
+                  </a>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col py-6">
+                <SheetClose asChild>
+                  <a 
+                    href="#services" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation('services');
+                    }}
+                    className="text-gray-700 hover:text-brand-blue font-medium px-6 py-4 text-lg"
+                  >
+                    Nos Services
+                  </a>
+                </SheetClose>
+                <SheetClose asChild>
+                  <a 
+                    href="#pourquoi-nous" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation('pourquoi-nous');
+                    }}
+                    className="text-gray-700 hover:text-brand-blue font-medium px-6 py-4 text-lg"
+                  >
+                    Pourquoi Nous
+                  </a>
+                </SheetClose>
+                <SheetClose asChild>
+                  <a 
+                    href="#faq" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation('faq');
+                    }}
+                    className="text-gray-700 hover:text-brand-blue font-medium px-6 py-4 text-lg"
+                  >
+                    FAQ
+                  </a>
+                </SheetClose>
+                <SheetClose asChild>
+                  <a 
+                    href="#contact" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation('contact');
+                    }}
+                    className="text-gray-700 hover:text-brand-blue font-medium px-6 py-4 text-lg"
+                  >
+                    Contact
+                  </a>
+                </SheetClose>
+                <div className="px-6 pt-4">
+                  <SheetClose asChild>
+                    <Button 
+                      onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="cta-button w-full"
+                    >
+                      Obtenir un devis
+                    </Button>
+                  </SheetClose>
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;

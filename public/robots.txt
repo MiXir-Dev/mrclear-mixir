@@ -1,0 +1,23 @@
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.mr-clear.com/sitemap.xml
+
+# Google & Bing specific
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Social media crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Encourage faster re-crawling
+Crawl-delay: 1

@@ -1,0 +1,275 @@
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+
+const QuoteForm = () => {
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    address: "",
+    city: "",
+    buildingType: "residential",
+    floors: "",
+    email: "",
+    phone: "",
+    message: "",
+    services: {
+      exteriorWindows: false,
+      interiorWindows: false,
+      gutterCleaning: false
+    }
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      services: {
+        ...prev.services,
+        [name]: checked
+      }
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simuler l'envoi du formulaire
+    setTimeout(() => {
+      toast({
+        title: "Demande envoyée",
+        description: "Nous vous contacterons sous peu avec votre devis personnalisé.",
+      });
+      setIsSubmitting(false);
+      
+      // Reset form
+      setFormData({
+        name: "",
+        address: "",
+        city: "",
+        buildingType: "residential",
+        floors: "",
+        email: "",
+        phone: "",
+        message: "",
+        services: {
+          exteriorWindows: false,
+          interiorWindows: false,
+          gutterCleaning: false
+        }
+      });
+    }, 1000);
+  };
+
+  return (
+    <section id="soumission" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">Obtenir un devis gratuit</h2>
+              <p className="text-gray-600 mt-2">
+                Remplissez le formulaire ci-dessous et recevez un devis personnalisé sous 24h.
+              </p>
+            </div>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
+                    Nom complet *
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    placeholder="Votre nom"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="email">
+                    Courriel *
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    placeholder="votre@email.com"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="phone">
+                    Téléphone *
+                  </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    placeholder="(514) 266-6151"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="address">
+                    Adresse
+                  </label>
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    value={formData.address}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    placeholder="123 rue Principale"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="city">
+                    Ville
+                  </label>
+                  <select
+                    id="city"
+                    name="city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                  >
+                    <option value="">Sélectionnez votre ville</option>
+                    <option value="Laval">Laval</option>
+                    <option value="Montréal">Montréal</option>
+                    <option value="Terrebonne">Terrebonne</option>
+                    <option value="Repentigny">Repentigny</option>
+                    <option value="Mascouche">Mascouche</option>
+                    <option value="L'Assomption">L'Assomption</option>
+                    <option value="Boisbriand">Boisbriand</option>
+                    <option value="Lorraine">Lorraine</option>
+                    <option value="Rosemère">Rosemère</option>
+                    <option value="Bois-des-Filion">Bois-des-Filion</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="buildingType">
+                    Type de bâtiment *
+                  </label>
+                  <select
+                    id="buildingType"
+                    name="buildingType"
+                    required
+                    value={formData.buildingType}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                  >
+                    <option value="residential">Résidentiel</option>
+                    <option value="commercial">Commercial</option>
+                    <option value="industrial">Industriel</option>
+                  </select>
+                </div>
+                                
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Services requis *
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="flex items-center">
+                      <input
+                        id="exteriorWindows"
+                        name="exteriorWindows"
+                        type="checkbox"
+                        checked={formData.services.exteriorWindows}
+                        onChange={handleCheckboxChange}
+                        className="w-5 h-5 text-brand-blue focus:ring-brand-blue"
+                      />
+                      <label htmlFor="exteriorWindows" className="ml-2 text-gray-700">
+                        Nettoyage de vitres extérieur
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        id="interiorWindows"
+                        name="interiorWindows"
+                        type="checkbox"
+                        checked={formData.services.interiorWindows}
+                        onChange={handleCheckboxChange}
+                        className="w-5 h-5 text-brand-blue focus:ring-brand-blue"
+                      />
+                      <label htmlFor="interiorWindows" className="ml-2 text-gray-700">
+                        Nettoyage de vitres intérieur
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        id="gutterCleaning"
+                        name="gutterCleaning"
+                        type="checkbox"
+                        checked={formData.services.gutterCleaning}
+                        onChange={handleCheckboxChange}
+                        className="w-5 h-5 text-brand-blue focus:ring-brand-blue"
+                      />
+                      <label htmlFor="gutterCleaning" className="ml-2 text-gray-700">
+                        Vidage de gouttières
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 font-medium mb-2" htmlFor="message">
+                    Message ou détails supplémentaires
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                    placeholder="Précisez vos besoins spécifiques..."
+                  ></textarea>
+                </div>
+              </div>
+              
+              <div className="mt-8 text-center">
+                <Button 
+                  type="submit" 
+                  className="cta-button w-full md:w-auto px-8 py-4"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Envoi en cours..." : "Obtenir mon devis gratuit"}
+                </Button>
+                <p className="text-gray-500 text-sm mt-3">
+                  Nous répondons généralement en moins de 24 heures ouvrables.
+                </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default QuoteForm;
