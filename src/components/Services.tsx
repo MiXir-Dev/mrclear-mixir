@@ -112,7 +112,7 @@ const ServiceCard = ({ service }) => {
     <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
       <div 
         ref={containerRef}
-        className="relative h-64 overflow-hidden cursor-grab"
+        className="relative h-64 overflow-hidden cursor-grab select-none"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >

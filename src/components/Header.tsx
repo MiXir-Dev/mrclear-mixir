@@ -56,10 +56,10 @@ const Header = () => {
     >
 
       <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center">
-          <a href="/" className="group block">
+        <div className="flex items-center space-x-3">
+          <a href="/" className="group flex items-center space-x-3">
             <div
-              className="h-25 w-25 rounded-full overflow-hidden  
+              className="h-12 w-12 rounded-full overflow-hidden  
                         group-hover:shadow-xl group-hover:scale-105 
                         transition-all duration-300 flex items-center justify-center"
             >
@@ -69,9 +69,12 @@ const Header = () => {
                 className="h-10 w-10 md:h-12 md:w-12 object-contain"
               />
             </div>
+            <span className="hidden md:inline-block font-semibold text-xl text-brand-blue tracking-wide group-hover:text-brand-blue/80 transition-colors duration-300">
+              Mr. Clear
+            </span>
           </a>
         </div>
-
+        
         {/* Menu desktop */}
         <nav className="hidden md:flex items-center space-x-8">
           <a 
