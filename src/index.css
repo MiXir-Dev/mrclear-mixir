@@ -169,3 +169,17 @@
 .social-icon {
   @apply transition-transform hover:scale-110 hover:text-brand-blue;
 }
+
+/* styles.css ou globals.css */
+html {
+  scroll-behavior: smooth;
+}
+
+.sticky-header-transition {
+  transition: background-color 0.5s ease,
+              backdrop-filter 0.3s ease,
+              padding 0.3s ease,
+              box-shadow 0.3s ease;
+  will-change: background-color, backdrop-filter, padding, box-shadow;
+  backface-visibility: hidden;
+}

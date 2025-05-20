@@ -37,10 +37,7 @@ const Header = () => {
   }, [hasScrolled]);
 
   const handleNavigation = (id: string) => {
-    // Close the menu
     setIsOpen(false);
-    
-    // Smooth scroll to the section
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ 
@@ -51,11 +48,13 @@ const Header = () => {
   };
 
   return (
-    <header 
-      className={`w-full bg-white py-4 shadow-sm ${
-        hasScrolled ? "transition-all duration-300" : ""
-      } ${isSticky ? "sticky top-0 z-50 py-2 shadow-md" : ""}`}
+    <header
+      className={`sticky top-0 z-50 w-full 
+                  backdrop-blur-lg backdrop-saturate-150 
+                  sticky-header-transition
+                  ${isSticky ? "bg-white/60 shadow-md py-4" : "bg-transparent py-5"}`}
     >
+
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <a href="#" className="flex items-center">

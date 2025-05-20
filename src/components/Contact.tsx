@@ -14,7 +14,7 @@ const Contact = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1 bg-brand-light rounded-lg p-8">
+          <div className="lg:col-span-1 bg-brand-light rounded-lg p-4">
             <h3 className="text-xl font-semibold mb-6">Informations de contact</h3>
             
             <div className="space-y-6">
