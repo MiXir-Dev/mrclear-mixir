@@ -52,13 +52,11 @@ const Services = () => {
   );
 };
 
-// Composant pour un service avec slider avant/après vertical interactif
 const ServiceCard = ({ service }) => {
   const [sliderValue, setSliderValue] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
   
-  // Handle direct mouse/touch interactions
   const handleInteractionStart = (clientX) => {
     if (!containerRef.current) return;
     
@@ -66,7 +64,6 @@ const ServiceCard = ({ service }) => {
     const containerWidth = rect.width;
     const offsetX = clientX - rect.left;
     
-    // Calculate percentage
     const newValue = Math.max(0, Math.min(100, (offsetX / containerWidth) * 100));
     setSliderValue(newValue);
     setIsDragging(true);
@@ -79,7 +76,6 @@ const ServiceCard = ({ service }) => {
     const containerWidth = rect.width;
     const offsetX = clientX - rect.left;
     
-    // Calculate percentage
     const newValue = Math.max(0, Math.min(100, (offsetX / containerWidth) * 100));
     setSliderValue(newValue);
   };
@@ -88,17 +84,14 @@ const ServiceCard = ({ service }) => {
     setIsDragging(false);
   };
   
-  // Mouse events
   const handleMouseDown = (e) => handleInteractionStart(e.clientX);
   const handleMouseMove = (e) => handleInteractionMove(e.clientX);
   const handleMouseUp = () => handleInteractionEnd();
   
-  // Touch events
   const handleTouchStart = (e) => handleInteractionStart(e.touches[0].clientX);
   const handleTouchMove = (e) => handleInteractionMove(e.touches[0].clientX);
   const handleTouchEnd = () => handleInteractionEnd();
   
-  // Add and remove event listeners
   useEffect(() => {
     if (isDragging) {
       window.addEventListener('mousemove', handleMouseMove);
@@ -151,18 +144,37 @@ const ServiceCard = ({ service }) => {
           className="absolute inset-y-0 z-20 touch-none" 
           style={{ left: `${sliderValue}%` }}
         >
-          <div className="absolute inset-y-0 w-1 bg-white"></div>
-          <div 
-            className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center border-2 border-brand-blue cursor-grab transition-shadow duration-300 ${isDragging ? 'shadow-xl scale-110' : ''}`}
+          {/* Ligne verticale */}
+          <div className="absolute inset-y-0 w-[2px] bg-white/80 backdrop-blur-sm"></div>
+
+          {/* Curseur rond glassmorphique */}
+          <div
+            className={`
+              absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-12 h-12 
+              bg-white/40 backdrop-blur-md border border-white/60
+              rounded-full shadow-lg flex items-center justify-center
+              cursor-grab transition-all duration-300
+              ${isDragging ? 'scale-110 shadow-xl' : ''}
+            `}
           >
-            <div className="flex items-center justify-center">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="#1a56db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M14 5L21 12M21 12L14 19" stroke="#1a56db" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
+            {/* Nouvelle icône (double flèche horizontale, clean) */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5 text-brand-blue"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M8 16l-4-4m0 0l4-4m-4 4h16m-4 4l4-4m0 0l-4-4"
+              />
+            </svg>
           </div>
         </div>
+
         
         {/* Labels Avant/Après */}
         <div className="flex justify-between text-xs text-white absolute bottom-4 inset-x-0 px-4 z-20 font-medium">
