@@ -7,26 +7,26 @@ const Services = () => {
     {
       title: "Nettoyage de vitres extérieur",
       description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
-      beforeImage: "https://images.unsplash.com/photo-1591588582259-e675bd2e6088?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      afterImage: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+      beforeImage: "/public/before-outside.png",
+      afterImage: "/public/after-outside.png"
     },
     {
       title: "Nettoyage de vitres intérieur",
       description: "Traitement délicat et minutieux de vos vitres intérieures, sans dégâts et avec des produits écologiques.",
-      beforeImage: "https://images.unsplash.com/photo-1460574283810-2aab119d8511?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      afterImage: "https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+      beforeImage: "/public/before-inside.png",
+      afterImage: "/public/after-inside.png"
     },
     {
       title: "Vidage de gouttières",
       description: "Nettoyage complet de vos gouttières pour prévenir les dégâts d'eau et protéger votre propriété.",
-      beforeImage: "https://images.unsplash.com/photo-1439337153520-7082a56a81f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      afterImage: "https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+      beforeImage: "/public/before-gutter-cleaning.png",
+      afterImage: "/public/after-gutter-cleaning.png"
     },
     {
       title: "Service pour commerces",
       description: "Entretien régulier pour bureaux, restaurants, magasins et vitrines commerciales avec équipement spécialisé.",
-      beforeImage: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-      afterImage: "https://images.unsplash.com/photo-1524230572899-a752b3835840?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+      beforeImage: "/public/before-company.png",
+      afterImage: "/public/after-company.png"
     }
   ];
 
