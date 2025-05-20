@@ -52,4 +52,4 @@ bun.lockb
 .preview/
 
 # Optional - static assets if dynamically built
-/public/assets/
+/assets/

@@ -57,8 +57,18 @@ const Header = () => {
 
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <a href="#" className="flex items-center">
-            <span className="text-brand-blue font-bold text-xl md:text-2xl">Mr. Clear</span>
+          <a href="/" className="group block">
+            <div
+              className="h-25 w-25 rounded-full overflow-hidden  
+                        group-hover:shadow-xl group-hover:scale-105 
+                        transition-all duration-300 flex items-center justify-center"
+            >
+              <img
+                src="/logo.png"
+                alt="Logo Mr. Clear"
+                className="h-10 w-10 md:h-12 md:w-12 object-contain"
+              />
+            </div>
           </a>
         </div>
 

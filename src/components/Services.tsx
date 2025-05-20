@@ -7,26 +7,26 @@ const Services = () => {
     {
       title: "Nettoyage de vitres extérieur",
       description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
-      beforeImage: "/public/before-outside.png",
-      afterImage: "/public/after-outside.png"
+      beforeImage: "/before-outside.png",
+      afterImage: "/after-outside.png"
     },
     {
       title: "Nettoyage de vitres intérieur",
       description: "Traitement délicat et minutieux de vos vitres intérieures, sans dégâts et avec des produits écologiques.",
-      beforeImage: "/public/before-inside.png",
-      afterImage: "/public/after-inside.png"
+      beforeImage: "/before-inside.png",
+      afterImage: "/after-inside.png"
     },
     {
       title: "Vidage de gouttières",
       description: "Nettoyage complet de vos gouttières pour prévenir les dégâts d'eau et protéger votre propriété.",
-      beforeImage: "/public/before-gutter-cleaning.png",
-      afterImage: "/public/after-gutter-cleaning.png"
+      beforeImage: "/before-gutter-cleaning.png",
+      afterImage: "/after-gutter-cleaning.png"
     },
     {
       title: "Service pour commerces",
       description: "Entretien régulier pour bureaux, restaurants, magasins et vitrines commerciales avec équipement spécialisé.",
-      beforeImage: "/public/before-company.png",
-      afterImage: "/public/after-company.png"
+      beforeImage: "/before-company.png",
+      afterImage: "/after-company.png"
     }
   ];
 
