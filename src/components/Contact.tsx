@@ -20,11 +20,15 @@ const Contact = () => {
             <div className="space-y-6">
               <div className="flex items-start">
                 <div className="bg-white p-3 rounded-full mr-4 shadow-sm">
-                  <Phone className="h-5 w-5 text-brand-blue" />
+                  <Phone className="h-5 w-5 text-brand-blue group-hover:animate-ping" />
                 </div>
                 <div>
                   <p className="font-medium">Téléphone</p>
-                  <a href="tel:+15142666151" className="text-gray-600 hover:text-brand-blue">
+                  <a 
+                    href="tel:+15142666151" 
+                    aria-label="Appeler le 514-266-6151" 
+                    className="text-gray-600 hover:text-brand-blue"
+                  >
                     (514) 266-6151
                   </a>
                 </div>
