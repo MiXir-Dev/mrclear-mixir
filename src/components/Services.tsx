@@ -6,9 +6,9 @@ const Services = () => {
   const services = [
     {
       title: "Nettoyage de vitres extérieur",
-      description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
-      beforeImage: "/before-outside.png",
-      afterImage: "/after-outside.png"
+      description: "Entretien régulier pour bureaux, restaurants, magasins et vitrines commerciales avec équipement spécialisé.",
+      beforeImage: "/before-company.png",
+      afterImage: "/after-company.png"
     },
     {
       title: "Nettoyage de vitres intérieur",
@@ -23,10 +23,10 @@ const Services = () => {
       afterImage: "/after-gutter-cleaning.png"
     },
     {
-      title: "Service pour commerces",
-      description: "Entretien régulier pour bureaux, restaurants, magasins et vitrines commerciales avec équipement spécialisé.",
-      beforeImage: "/before-company.png",
-      afterImage: "/after-company.png"
+      title: "Nettoyage de vinyle",
+      description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
+      beforeImage: "/before-outside.png",
+      afterImage: "/after-outside.png"
     }
   ];
 
