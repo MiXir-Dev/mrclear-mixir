@@ -23,7 +23,7 @@ const Services = () => {
       afterImage: "/after-gutter-cleaning.png"
     },
     {
-      title: "Nettoyage de vinyle",
+      title: "Nettoyage de revêtement",
       description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
       beforeImage: "/before-outside.png",
       afterImage: "/after-outside.png"
