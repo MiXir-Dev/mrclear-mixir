@@ -30,7 +30,7 @@ const Footer = () => {
             </div>
             <div className="flex items-center">
               <MapPin size={18} className="mr-2" />
-              <span>Laval, Montréal, Rive-Nord</span>
+              <span>Rive-Nord, Laval, Montréal</span>
             </div>
             <div className="mt-4 flex space-x-4">
               <a 

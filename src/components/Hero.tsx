@@ -11,7 +11,7 @@ const Hero = () => {
       <div className="container relative mx-auto py-20 md:py-32 px-4">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            Nettoyage de vitres professionnel à Laval, Montréal et sur la Rive-Nord
+            Nettoyage de vitres professionnel sur la Rive-Nord, Laval et Montréal 
           </h1>
           <p className="text-xl md:text-2xl mb-8 font-light">
             Service complet pour résidences et commerces. <br className="hidden md:block" />
@@ -23,7 +23,7 @@ const Hero = () => {
               className="bg-white text-brand-blue hover:bg-gray-100 font-semibold text-lg py-6 px-8"
               size="lg"
             >
-              Obtenir un devis gratuit
+              Obtenir un devis gratuit →
             </Button>
             <Button 
               onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
