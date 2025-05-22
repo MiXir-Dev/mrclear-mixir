@@ -39,7 +39,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
     "provider": {
       "@type": "LocalBusiness",
       "name": "Mr. Clear",
-      "image": "https://www.mr-clear.com/images/logo.png",
+      "image": "https://www.mr-clear.com/logo.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": city,
@@ -177,11 +177,11 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                                 </ul>
                               </CardContent>
                             </Card>
-                            <div className="bg-gray-50 rounded-lg h-full flex items-center justify-center overflow-hidden">
+                            <div className="bg-gray-50 rounded-lg flex items-center justify-center overflow-hidden h-64">
                               <img
-                                src="/images/window-cleaning.png"
-                                alt="Service résidentiel" 
-                                className="w-full h-full object-cover"
+                                src="/res-window-cleaning.png"
+                                alt="Service résidentiel"
+                                className="w-full h-full object-contain"
                               />
                             </div>
                           </>
@@ -189,7 +189,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                           <>
                             <div className="bg-gray-50 rounded-lg h-full flex items-center justify-center overflow-hidden">
                               <img
-                                src="/images/window-cleaning.png"
+                                src="/res-commercial-cleaning.png"
                                 alt="Service commercial" 
                                 className="w-full h-full object-cover"
                               />
