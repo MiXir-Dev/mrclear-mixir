@@ -120,6 +120,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                     src={imagePath} 
                     alt={`Lavage de vitres à ${city}`} 
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                     <div className="p-6 md:p-8">
