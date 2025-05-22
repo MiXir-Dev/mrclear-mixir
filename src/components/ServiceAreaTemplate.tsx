@@ -252,7 +252,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                     </div>
                     
                     {/* CTA */}
-                    <div className="bg-footer-blue rounded-lg p-6 text-white text-center mb-8">
+                    <div className="bg-brand-blue rounded-lg p-6 text-white text-center mb-8">
                       <h2 className="text-2xl font-bold mb-3">Contactez-nous</h2>
                       <p className="mb-4">
                         Notre équipe professionnelle est prête à vous servir à {city}.

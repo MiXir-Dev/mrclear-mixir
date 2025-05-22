@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-footer-blue text-white">
+    <footer className="bg-brand-blue text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1 flex flex-col items-center md:items-start">
@@ -92,7 +92,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#soumission" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                <a href="/soumission" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
                   Demande de devis
                 </a>
               </li>

@@ -67,7 +67,7 @@ export default {
 				},
 				// Couleurs personnalisées pour le site de lavage de vitres
 				brand: {
-					blue: "#0F3460",
+					blue: "#67badc",
 					light: "#E6EDF5",
 					gray: "#F5F5F5",
 					dark: "#1A1A2E"

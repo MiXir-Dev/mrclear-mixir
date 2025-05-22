@@ -95,11 +95,11 @@ const Index = () => {
         <meta name="description" content="Entreprise spécialisée en nettoyage de vitres résidentiel et commercial à Laval, Montréal et Rive-Nord. Devis gratuit, service fiable et résultats impeccables!" />
         <meta name="keywords" content="lavage de vitres, nettoyage de vitres, lavage de fenêtres, prix lavage de vitres, Laval, Montréal, Terrebonne, Repentigny, service nettoyage vitres, entreprise lavage vitre, vidage de gouttières" />
         <meta property="og:title" content="Mr. Clear - Service professionnel de lavage de vitres" />
-        <meta property="og:description" content="Service professionnel de nettoyage de vitres résidentiel et commercial à Laval, Montréal, Terrebonne, Repentigny et toute la Rive-Nord." />
+        <meta property="og:description" content="Service professionnel de nettoyage de vitres résidentiel et commercial à Terrebonne, Repentigny, sur toute la Rive-Nord, Laval et Montréal" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.mr-clear.com" />
         <meta name="geo.region" content="CA-QC" />
-        <meta name="geo.placename" content="Laval, Montréal" />
+        <meta name="geo.placename" content="Terrebonne, Repentigny, Rive-Nord, Laval, L'Assomption, Boisbriand, Lorraine, Rosemère, Bois-des-Fillion, Mascouche, Montréal" />
         <link rel="canonical" href="https://www.mr-clear.com" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
@@ -108,11 +108,10 @@ const Index = () => {
       <Header />
       <main>
         <Hero />
-        <Features />
-        <Services />
         <About />
+        <Services />
+        <Features />
         <Testimonials />
-        <QuoteForm />
         <CTA />
         <FAQ />
         <Contact />

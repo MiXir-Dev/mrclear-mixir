@@ -166,7 +166,7 @@ const QuoteForm = () => {
                 
                 <div>
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="address">
-                    Adresse
+                    Adresse *
                   </label>
                   <input
                     id="address"
@@ -174,6 +174,7 @@ const QuoteForm = () => {
                     type="text"
                     value={formData.address}
                     onChange={handleChange}
+                    required
                     className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     placeholder="123 rue Principale"
                   />
@@ -181,7 +182,7 @@ const QuoteForm = () => {
                 
                 <div>
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="city">
-                    Ville
+                    Ville *
                   </label>
                      <input
                       id="city"
