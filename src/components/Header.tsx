@@ -78,7 +78,7 @@ const Header = () => {
               <img
                 src="/logo.png"
                 alt="Logo Mr. Clear"
-                className="object-contain h-10 w-10 md:h-12 md:w-12"
+                className="rounded-full object-contain h-10 w-10 md:h-12 md:w-12"
               />
             </div>
 
