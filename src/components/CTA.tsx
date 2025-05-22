@@ -75,7 +75,7 @@ const CTA = () => {
     {/* Bouton sous le carousel */}
     <div className="flex justify-center mt-12">
       <Button
-        onClick={() => navigate("/soumission")}
+        onClick={() => {navigate("/soumission")}}
         className="bg-white text-brand-blue hover:bg-gray-100 font-medium py-6 px-8 rounded-md text-lg shadow-lg transform transition-transform hover:scale-105"
       >
         Obtenir un devis gratuit

@@ -16,6 +16,7 @@ import Lorraine from "./components/secteurs/Lorraine.tsx";
 import BoisDesFilion from "./components/secteurs/BoisDesFilion.tsx";
 import Boisbriand from "./components/secteurs/Boisbriand.tsx";
 import Rosemere from "./components/secteurs/Rosemere.tsx";
+import Privacy from "./pages/Privacy.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,7 +40,8 @@ const App = () => (
           <Route path="/secteurs/boisbriand" element={<Boisbriand />} />
           <Route path="/secteurs/lorraine" element={<Lorraine />} />
           <Route path="/secteurs/rosemere" element={<Rosemere />} />
-          <Route path="/secteurs/bois-des-filion" element={<BoisDesFilion />} />          
+          <Route path="/secteurs/bois-des-filion" element={<BoisDesFilion />} />
+          <Route path="/confidentialite" element={<Privacy />} />          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

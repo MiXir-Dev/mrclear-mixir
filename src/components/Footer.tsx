@@ -175,18 +175,9 @@ const Footer = () => {
             &copy; {currentYear} Mr. Clear. Tous droits réservés. <a href="https://www.mr-clear.com" className="hover:underline">mr-clear.com</a>
           </p>
           <div className="mt-4 md:mt-0">
-            <ul className="flex justify-center md:justify-end space-x-6">
-              <li>
-                <a href="#" className="opacity-75 hover:opacity-100 transition-opacity text-sm">
-                  Politique de confidentialité
-                </a>
-              </li>
-              <li>
-                <a href="#" className="opacity-75 hover:opacity-100 transition-opacity text-sm">
-                  Conditions d'utilisation
-                </a>
-              </li>
-            </ul>
+            <Link to="/confidentialite" className="opacity-75 hover:opacity-100 transition-opacity text-sm">
+              Politique de confidentialité
+            </Link>
           </div>
         </div>
       </div>
