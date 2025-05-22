@@ -127,11 +127,11 @@ const Header = () => {
 
         {/* Menu mobile drawer */}
         <div className="md:hidden flex items-center">
-          <a href="tel:+15142666151" className="mr-4 bg-brand-blue text-white p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
+          <a href="tel:+15142666151" className="mr-4 text-bg-brand-blue p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
             <Phone size={20} />
           </a>
           
-          <a href="mailto:mrclear.homeservices@gmail.com" className="mr-4 bg-brand-blue text-white p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
+          <a href="mailto:mrclear.homeservices@gmail.com" className="mr-4 text-bg-brand-blue p-2 rounded-full hover:bg-brand-blue/90 transition-colors">
             <Mail size={20} />
           </a>
           
