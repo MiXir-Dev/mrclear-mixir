@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import { Helmet } from 'react-helmet';
 import { Link } from "react-router-dom";
 import { MapPin, ChevronRight, Phone, Mail } from "lucide-react";
@@ -15,6 +14,10 @@ interface ServiceAreaProps {
 
 const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cleaning.png" }: ServiceAreaProps) => {
   const [activeTab, setActiveTab] = useState<'residential' | 'commercial'>('residential');
+  
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   
   // All service areas for the sidebar
   const serviceAreas = [
