@@ -9,7 +9,7 @@ const About = () => {
           <div className="w-full lg:w-1/2 mb-10 lg:mb-0 lg:pr-12">
             <div className="relative">
               <img 
-                src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                src="https://secteurs.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
                 alt="Équipe professionnelle de nettoyage de vitres" 
                 className="rounded-lg shadow-lg w-full object-cover"
               />

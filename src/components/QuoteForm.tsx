@@ -150,25 +150,16 @@ const QuoteForm = () => {
                   <label className="block text-gray-700 font-medium mb-2" htmlFor="city">
                     Ville
                   </label>
-                  <select
-                    id="city"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
-                  >
-                    <option value="">Sélectionnez votre ville</option>
-                    <option value="Laval">Laval</option>
-                    <option value="Montréal">Montréal</option>
-                    <option value="Terrebonne">Terrebonne</option>
-                    <option value="Repentigny">Repentigny</option>
-                    <option value="Mascouche">Mascouche</option>
-                    <option value="L'Assomption">L'Assomption</option>
-                    <option value="Boisbriand">Boisbriand</option>
-                    <option value="Lorraine">Lorraine</option>
-                    <option value="Rosemère">Rosemère</option>
-                    <option value="Bois-des-Filion">Bois-des-Filion</option>
-                  </select>
+                     <input
+                      id="city"
+                      name="city"
+                      type="text"
+                      required
+                      value={formData.city}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                      placeholder="Repentigny"
+                    />
                 </div>
                 
                 <div>

@@ -1,5 +1,6 @@
 
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,8 +11,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1 flex flex-col items-center md:items-start">
             <div className="mb-6 text-center md:text-left">
-              <h3 className="text-2xl font-bold mb-2">Mr. Clear</h3>
-              <div className="w-16 h-1 bg-white rounded mx-auto md:mx-0"></div>
+              <Link to="/" className="inline-block">
+                <h3 className="text-2xl font-bold mb-2">Mr. Clear</h3>
+                <div className="w-16 h-1 bg-white rounded mx-auto md:mx-0"></div>
+              </Link>
             </div>
             <p className="mb-4 text-center md:text-left">
               Services professionnels de lavage de vitres et entretien extérieur pour particuliers et entreprises.
@@ -110,18 +113,58 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-2">Secteurs desservis</h3>
             <div className="grid grid-cols-2">
               <ul className="space-y-2">
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Laval</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Montréal</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Repentigny</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Terrebonne</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Mascouche</li>
+              <li>
+                  <Link to="/secteurs/laval" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Laval
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/montreal" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Montréal
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/repentigny" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Repentigny
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/terrebonne" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Terrebonne
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/mascouche" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Mascouche
+                  </Link>
+                </li>
               </ul>
               <ul className="space-y-2">
-                <li className="opacity-75 hover:opacity-100 transition-opacity">L'Assomption</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Boisbriand</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Lorraine</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Rosemère</li>
-                <li className="opacity-75 hover:opacity-100 transition-opacity">Bois-des-Filion</li>
+                <li>
+                  <Link to="/secteurs/assomption" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    L'Assomption
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/boisbriand" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Boisbriand
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/lorraine" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Lorraine
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/rosemere" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Rosemère
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/secteurs/bois-des-filion" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                    Bois-des-Filion
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

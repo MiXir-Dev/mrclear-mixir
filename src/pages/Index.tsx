@@ -32,9 +32,20 @@ const Index = () => {
         }
       }
     };
-
+  
     document.addEventListener('click', handleAnchorClick);
-    
+  
+    // 👇 Ajoute cette partie :
+    const hash = window.location.hash;
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  
     return () => {
       document.removeEventListener('click', handleAnchorClick);
     };

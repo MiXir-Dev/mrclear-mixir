@@ -1,6 +1,5 @@
 
 import { useState, useRef, useEffect } from "react";
-import { Slider } from "@/components/ui/slider";
 
 const Services = () => {
   const services = [

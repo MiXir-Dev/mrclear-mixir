@@ -10,15 +10,17 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
-      // Mark that we've started scrolling to prevent initial animation glitch
       if (!hasScrolled) {
         setHasScrolled(true);
       }
@@ -38,15 +40,22 @@ const Header = () => {
 
   const handleNavigation = (id: string) => {
     setIsOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start' 
-      });
+
+    const scrollToId = () => {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
+    if (location.pathname !== "/") {
+      navigate(`/#${id}`);
+      setTimeout(scrollToId, 100);
+    } else {
+      scrollToId();
     }
   };
-
+  
   return (
     <header
       className={`sticky top-0 z-50 w-full 
@@ -78,7 +87,7 @@ const Header = () => {
         {/* Menu desktop */}
         <nav className="hidden md:flex items-center space-x-8">
           <a 
-            href="#services" 
+            href="/#services" 
             onClick={(e) => {
               e.preventDefault();
               handleNavigation('services');
@@ -88,7 +97,7 @@ const Header = () => {
             Nos Services
           </a>
           <a 
-            href="#pourquoi-nous" 
+            href="/#pourquoi-nous" 
             onClick={(e) => {
               e.preventDefault();
               handleNavigation('pourquoi-nous');
@@ -98,7 +107,7 @@ const Header = () => {
             Pourquoi Nous
           </a>
           <a 
-            href="#faq" 
+            href="/#faq" 
             onClick={(e) => {
               e.preventDefault();
               handleNavigation('faq');
@@ -108,7 +117,7 @@ const Header = () => {
             FAQ
           </a>
           <a 
-            href="#contact" 
+            href="/#contact" 
             onClick={(e) => {
               e.preventDefault();
               handleNavigation('contact');
@@ -118,7 +127,7 @@ const Header = () => {
             Contact
           </a>
           <Button 
-            onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+            onClick={() => handleNavigation('soumission')}
             className="cta-button"
           >
             Obtenir un devis
@@ -205,10 +214,10 @@ const Header = () => {
                 <div className="px-6 pt-4">
                   <SheetClose asChild>
                     <Button 
-                      onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+                      onClick={() => handleNavigation('soumission')}
                       className="cta-button w-full"
                     >
-                      Obtenir un devis
+                      Obtenir un devis →
                     </Button>
                   </SheetClose>
                 </div>
