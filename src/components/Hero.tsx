@@ -1,7 +1,9 @@
 
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative bg-brand-blue text-white">
       <div 
@@ -19,7 +21,7 @@ const Hero = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
-              onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => navigate("/soumission")}
               className="bg-white text-brand-blue hover:bg-gray-100 font-semibold text-lg py-6 px-8"
               size="lg"
             >

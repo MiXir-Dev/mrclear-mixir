@@ -7,8 +7,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useNavigate } from "react-router-dom";
 
 const CTA = () => {
+  const navigate = useNavigate();
+  
   // Images pour le carousel
   const carouselImages = [
     "/sub-carousel-2.png",
@@ -72,9 +75,7 @@ const CTA = () => {
     {/* Bouton sous le carousel */}
     <div className="flex justify-center mt-12">
       <Button
-        onClick={() =>
-          document.getElementById("soumission")?.scrollIntoView({ behavior: "smooth" })
-        }
+        onClick={() => navigate("/soumission")}
         className="bg-white text-brand-blue hover:bg-gray-100 font-medium py-6 px-8 rounded-md text-lg shadow-lg transform transition-transform hover:scale-105"
       >
         Obtenir un devis gratuit

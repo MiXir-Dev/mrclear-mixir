@@ -127,7 +127,7 @@ const Header = () => {
             Contact
           </a>
           <Button 
-            onClick={() => handleNavigation('soumission')}
+            onClick={() => navigate("/soumission")}
             className="cta-button"
           >
             Obtenir un devis
@@ -214,7 +214,7 @@ const Header = () => {
                 <div className="px-6 pt-4">
                   <SheetClose asChild>
                     <Button 
-                      onClick={() => handleNavigation('soumission')}
+                      onClick={() => navigate("/soumission")}
                       className="cta-button w-full"
                     >
                       Obtenir un devis →

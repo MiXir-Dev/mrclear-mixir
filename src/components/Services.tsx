@@ -1,32 +1,25 @@
-
 import { useState, useRef, useEffect } from "react";
 
 const Services = () => {
   const services = [
     {
-      title: "Nettoyage de vitres extérieur",
-      description: "Entretien régulier pour bureaux, restaurants, magasins et vitrines commerciales avec équipement spécialisé.",
-      beforeImage: "/before-company.png",
-      afterImage: "/after-company.png"
-    },
-    {
-      title: "Nettoyage de vitres intérieur",
-      description: "Traitement délicat et minutieux de vos vitres intérieures, sans dégâts et avec des produits écologiques.",
+      title: "Nettoyage de vitres intérieur & extérieur",
+      description: "Service complet de nettoyage de vitres pour l'intérieur et l'extérieur. Nous utilisons des produits écologiques pour un entretien délicat, sans dégâts, et un équipement spécialisé pour les vitrines, bureaux et commerces.",
       beforeImage: "/before-inside.png",
       afterImage: "/after-inside.png"
-    },
+    },    
     {
-      title: "Vidage de gouttières",
-      description: "Nettoyage complet de vos gouttières pour prévenir les dégâts d'eau et protéger votre propriété.",
+      title: "Vidage et entretien des gouttières",
+      description: "Élimination efficace des débris pour assurer un bon écoulement de l’eau, prévenir les infiltrations et prolonger la durée de vie de votre toiture.",
       beforeImage: "/before-gutter-cleaning.png",
       afterImage: "/after-gutter-cleaning.png"
     },
     {
-      title: "Nettoyage de revêtement",
-      description: "Service complet pour maisons, condos et commerces. Nous utilisons des équipements professionnels pour des résultats impeccables.",
+      title: "Nettoyage de revêtement extérieur",
+      description: "Remise à neuf de vos surfaces extérieures grâce à un lavage à pression professionnel. Parfait pour maisons, condos et commerces, sans abîmer les matériaux.",
       beforeImage: "/before-outside.png",
       afterImage: "/after-outside.png"
-    }
+    }    
   ];
 
   return (
@@ -41,7 +34,7 @@ const Services = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (
             <ServiceCard key={index} service={service} />
           ))}
