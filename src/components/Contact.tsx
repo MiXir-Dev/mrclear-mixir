@@ -98,7 +98,7 @@ const Contact = () => {
                   <Instagram className="w-6 h-6" />
                 </a>
                 <a
-                  href="https://www.facebook.com/mrclear.ca"
+                  href="https://www.facebook.com/share/15mFWzf8Aj/?mibextid=wwXIfr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 hover:text-brand-blue transition-colors duration-200"
