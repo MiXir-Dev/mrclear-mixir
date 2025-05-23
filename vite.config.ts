@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { sitemapPlugin } from "vite-plugin-sitemap";
+import sitemapPlugin from "vite-plugin-sitemap";
 
 export default defineConfig({
   build: {
@@ -16,7 +16,7 @@ export default defineConfig({
     react(),
     sitemapPlugin({
       hostname: "https://www.mr-clear.com",
-      routes: [
+      dynamicRoutes: [
         "/",
         "/soumission",
         "/confidentialite",
@@ -33,7 +33,7 @@ export default defineConfig({
       ],
       changefreq: "monthly",
       priority: 0.7,
-      trailingSlash: false,
+      readable: true,
     }),
   ],
   resolve: {
