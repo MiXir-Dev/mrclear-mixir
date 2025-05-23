@@ -16,8 +16,11 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
   const [activeTab, setActiveTab] = useState<'residential' | 'commercial'>('residential');
   
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
   }, []);
+  
   
   // All service areas for the sidebar
   const serviceAreas = [

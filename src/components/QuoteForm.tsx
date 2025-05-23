@@ -1,11 +1,21 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import emailjs from "emailjs-com";
 
 
 const QuoteForm = () => {
+
+  useEffect(() => {
+    console.log('before')
+    requestAnimationFrame(() => {
+      console.log('after')
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, []); 
+  
+
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
