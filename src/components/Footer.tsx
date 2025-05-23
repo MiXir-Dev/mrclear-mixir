@@ -1,6 +1,6 @@
-
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import FooterLink from "./Footlink";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -56,120 +56,63 @@ const Footer = () => {
               </a>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-2">Nos Services</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#services" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Nettoyage de vitres extérieur
-                </a>
+                <FooterLink id="services">Nettoyage de vitres intérieur & extérieur</FooterLink>
               </li>
               <li>
-                <a href="#services" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Nettoyage de vitres intérieur
-                </a>
+                <FooterLink id="services">Vidage de gouttières</FooterLink>
               </li>
               <li>
-                <a href="#services" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Vidage de gouttières
-                </a>
-              </li>
-              <li>
-                <a href="#services" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Services commerciaux
-                </a>
+                <FooterLink id="services">Services commerciaux</FooterLink>
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-2">Liens Rapides</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#pourquoi-nous" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Pourquoi nous choisir
-                </a>
+                <FooterLink id="pourquoi-nous">Pourquoi nous choisir</FooterLink>
               </li>
               <li>
-                <a href="/soumission" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
+                <Link to="/soumission" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
                   Demande de devis
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#faq" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  FAQ
-                </a>
+                <FooterLink id="faq">FAQ</FooterLink>
               </li>
               <li>
-                <a href="#contact" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                  Contact
-                </a>
+                <FooterLink id="contact">Contact</FooterLink>
               </li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 border-b border-white/20 pb-2">Secteurs desservis</h3>
             <div className="grid grid-cols-2">
               <ul className="space-y-2">
-              <li>
-                  <Link to="/secteurs/laval" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Laval
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/montreal" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Montréal
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/repentigny" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Repentigny
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/terrebonne" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Terrebonne
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/mascouche" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Mascouche
-                  </Link>
-                </li>
+                <li><Link to="/secteurs/laval">Laval</Link></li>
+                <li><Link to="/secteurs/montreal">Montréal</Link></li>
+                <li><Link to="/secteurs/repentigny">Repentigny</Link></li>
+                <li><Link to="/secteurs/terrebonne">Terrebonne</Link></li>
+                <li><Link to="/secteurs/mascouche">Mascouche</Link></li>
               </ul>
               <ul className="space-y-2">
-                <li>
-                  <Link to="/secteurs/assomption" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    L'Assomption
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/boisbriand" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Boisbriand
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/lorraine" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Lorraine
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/rosemere" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Rosemère
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/secteurs/bois-des-filion" className="opacity-75 hover:opacity-100 transition-opacity hover:translate-x-1 inline-block">
-                    Bois-des-Filion
-                  </Link>
-                </li>
+                <li><Link to="/secteurs/assomption">L'Assomption</Link></li>
+                <li><Link to="/secteurs/boisbriand">Boisbriand</Link></li>
+                <li><Link to="/secteurs/lorraine">Lorraine</Link></li>
+                <li><Link to="/secteurs/rosemere">Rosemère</Link></li>
+                <li><Link to="/secteurs/bois-des-filion">Bois-des-Filion</Link></li>
               </ul>
             </div>
           </div>
         </div>
-        
+
         <div className="border-t border-white/20 mt-12 pt-8 text-center md:flex md:justify-between md:text-left">
           <p className="opacity-75 text-sm">
             &copy; {currentYear} Mr. Clear. Tous droits réservés. <a href="https://www.mr-clear.com" className="hover:underline">mr-clear.com</a>

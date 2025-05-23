@@ -17,6 +17,7 @@ import BoisDesFilion from "./components/secteurs/BoisDesFilion.tsx";
 import Boisbriand from "./components/secteurs/Boisbriand.tsx";
 import Rosemere from "./components/secteurs/Rosemere.tsx";
 import Privacy from "./pages/Privacy.tsx";
+import ScrollToTop from "./hooks/scroll-to-top.tsx";
 
 const queryClient = new QueryClient();
 
@@ -26,24 +27,25 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="/soumission" element={<QuotePage />} />
-          {/* Service Area Routes */}
-          <Route path="/secteurs/laval" element={<Laval />} />
-          <Route path="/secteurs/montreal" element={<Montreal />} />
-          <Route path="/secteurs/terrebonne" element={<Terrebonne />} />
-          <Route path="/secteurs/repentigny" element={<Repentigny />} />
-          <Route path="/secteurs/mascouche" element={<Mascouche />} />
-          <Route path="/secteurs/assomption" element={<Assomption />} />
-          <Route path="/secteurs/boisbriand" element={<Boisbriand />} />
-          <Route path="/secteurs/lorraine" element={<Lorraine />} />
-          <Route path="/secteurs/rosemere" element={<Rosemere />} />
-          <Route path="/secteurs/bois-des-filion" element={<BoisDesFilion />} />
-          <Route path="/confidentialite" element={<Privacy />} />          
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="/soumission" element={<QuotePage />} />
+            {/* Service Area Routes */}
+            <Route path="/secteurs/laval" element={<Laval />} />
+            <Route path="/secteurs/montreal" element={<Montreal />} />
+            <Route path="/secteurs/terrebonne" element={<Terrebonne />} />
+            <Route path="/secteurs/repentigny" element={<Repentigny />} />
+            <Route path="/secteurs/mascouche" element={<Mascouche />} />
+            <Route path="/secteurs/assomption" element={<Assomption />} />
+            <Route path="/secteurs/boisbriand" element={<Boisbriand />} />
+            <Route path="/secteurs/lorraine" element={<Lorraine />} />
+            <Route path="/secteurs/rosemere" element={<Rosemere />} />
+            <Route path="/secteurs/bois-des-filion" element={<BoisDesFilion />} />
+            <Route path="/confidentialite" element={<Privacy />} />          
+            <Route path="*" element={<NotFound />} />
+          </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
