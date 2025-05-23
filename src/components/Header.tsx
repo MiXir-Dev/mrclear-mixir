@@ -61,7 +61,7 @@ const Header = () => {
       className={`sticky top-0 z-50 w-full 
                   backdrop-blur-lg backdrop-saturate-150 
                   sticky-header-transition
-                  ${isSticky ? "bg-white/60 shadow-md py-4" : "bg-transparent py-5"}`}
+                  ${isSticky ? "bg-brand-blue/20 shadow-md py-4" : "bg-transparent py-5"}`}
     >
 
       <div className="container mx-auto flex items-center justify-between">
@@ -72,8 +72,7 @@ const Header = () => {
                         transition-all duration-300 
                         flex items-center justify-center 
                         rounded-full md:rounded-none 
-                        h-12 w-12 md:h-auto md:w-auto
-                        group-hover:shadow-xl group-hover:scale-105"
+                        h-12 w-12 md:h-auto md:w-auto"
             >
               <img
                 src="/logo.png"

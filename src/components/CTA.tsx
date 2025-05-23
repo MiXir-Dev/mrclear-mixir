@@ -60,6 +60,7 @@ const CTA = () => {
                     src={image}
                     alt={`Image de lavage de vitres professionnel ${index + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </div>

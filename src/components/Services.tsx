@@ -115,6 +115,7 @@ const ServiceCard = ({ service }) => {
           src={service.afterImage} 
           alt={`${service.title} - résultat final`}
           className="w-full h-full object-cover absolute inset-0"
+          loading="lazy"
         />
         
         {/* Image avant (premier plan avec clip-path) */}
@@ -128,6 +129,7 @@ const ServiceCard = ({ service }) => {
             src={service.beforeImage} 
             alt={`${service.title} - avant service`}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         </div>
         

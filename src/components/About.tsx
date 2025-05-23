@@ -1,7 +1,10 @@
 
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const About = () => {
+  const navigate = useNavigate();
+
   return (
     <section id="pourquoi-nous" className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -12,6 +15,7 @@ const About = () => {
                 src="/about.png" 
                 alt="Équipe professionnelle de nettoyage de vitres" 
                 className="rounded-lg shadow-lg w-full object-cover"
+                loading="lazy"
               />
               <div className="absolute -bottom-6 -right-6 bg-brand-blue text-white p-6 rounded-lg shadow-lg max-w-xs hidden md:block">
                 <p className="text-3xl font-bold">10+</p>
@@ -67,7 +71,7 @@ const About = () => {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
-                onClick={() => document.getElementById('soumission')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {navigate("/soumission")}}
                 className="cta-button"
                 size="lg"
               >

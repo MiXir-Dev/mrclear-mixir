@@ -186,6 +186,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                                 src="/res-window-cleaning.png"
                                 alt="Service résidentiel"
                                 className="w-full h-full object-contain"
+                                loading="lazy"
                               />
                             </div>
                           </>
@@ -196,6 +197,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
                                 src="/res-commercial-cleaning.png"
                                 alt="Service commercial" 
                                 className="w-full h-full object-cover"
+                                loading="lazy"
                               />
                             </div>
                             <Card className="shadow-sm">
