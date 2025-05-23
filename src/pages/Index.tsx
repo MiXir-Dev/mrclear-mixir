@@ -83,7 +83,7 @@ const Index = () => {
       "closes": "18:00"
     },
     "sameAs": [
-      "https://www.facebook.com/mrclear.ca",
+      "https://www.facebook.com/share/15mFWzf8Aj/?mibextid=wwXIfr",
       "https://www.instagram.com/mrclear.ca"
     ]
   };
