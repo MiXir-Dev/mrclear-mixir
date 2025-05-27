@@ -57,7 +57,7 @@ const Index = () => {
     "@type": "LocalBusiness",
     "name": "Mr. Clear",
     "description": "Service professionnel de nettoyage de vitres résidentiel et commercial à Laval, Montréal, Terrebonne, Repentigny et toute la Rive-Nord.",
-    "url": "https://www.mr-clear.com",
+    "url": "https://mr-clear.com",
     "telephone": "+15142666151",
     "email": "mrclear.homeservices@gmail.com",
     "address": {
@@ -97,10 +97,10 @@ const Index = () => {
         <meta property="og:title" content="Mr. Clear - Service professionnel de lavage de vitres" />
         <meta property="og:description" content="Service professionnel de nettoyage de vitres résidentiel et commercial à Terrebonne, Repentigny, sur toute la Rive-Nord, Laval et Montréal" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://www.mr-clear.com" />
+        <meta property="og:url" content="https://mr-clear.com" />
         <meta name="geo.region" content="CA-QC" />
         <meta name="geo.placename" content="Terrebonne, Repentigny, Rive-Nord, Laval, L'Assomption, Boisbriand, Lorraine, Rosemère, Bois-des-Fillion, Mascouche, Montréal" />
-        <link rel="canonical" href="https://www.mr-clear.com" />
+        <link rel="canonical" href="https://mr-clear.com" />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

@@ -38,7 +38,7 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
     "provider": {
       "@type": "LocalBusiness",
       "name": "Mr. Clear",
-      "image": "https://www.mr-clear.com/logo.png",
+      "image": "https://mr-clear.com/logo.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": city,
@@ -69,10 +69,10 @@ const ServiceAreaTemplate = ({ city, description, imagePath = "/images/window-cl
         <meta property="og:title" content={`Lavage de Vitres à ${city} | Mr. Clear`} />
         <meta property="og:description" content={`Service professionnel de nettoyage de vitres résidentiel et commercial à ${city}. Demandez votre devis gratuit dès maintenant!`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://www.mr-clear.com/secteurs/${city.toLowerCase()}`} />
+        <meta property="og:url" content={`https://mr-clear.com/secteurs/${city.toLowerCase()}`} />
         <meta name="geo.region" content="CA-QC" />
         <meta name="geo.placename" content={city} />
-        <link rel="canonical" href={`https://www.mr-clear.com/secteurs/${city.toLowerCase()}`} />
+        <link rel="canonical" href={`https://mr-clear.com/secteurs/${city.toLowerCase()}`} />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

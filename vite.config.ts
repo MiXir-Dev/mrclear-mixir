@@ -15,7 +15,7 @@ export default defineConfig({
   plugins: [
     react(),
     sitemapPlugin({
-      hostname: "https://www.mr-clear.com",
+      hostname: "https://mr-clear.com",
       dynamicRoutes: [
         "/",
         "/soumission",

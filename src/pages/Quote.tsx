@@ -14,7 +14,7 @@ const QuotePage = () => {
           name="description"
           content="Remplissez notre formulaire de soumission pour obtenir un devis personnalisé en 24h. Service rapide et professionnel pour vitres et gouttières."
         />
-        <link rel="canonical" href="https://www.mr-clear.com/soumission" />
+        <link rel="canonical" href="https://mr-clear.com/soumission" />
         <meta property="og:title" content="Soumission - Mr. Clear" />
         <meta
           property="og:description"
