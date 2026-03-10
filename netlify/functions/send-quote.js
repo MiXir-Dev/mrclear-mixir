@@ -1,284 +1,536 @@
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "Content-Type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Content-Type": "application/json",
-};
+const HTTP_METHOD = Object.freeze({
+  OPTIONS: 'OPTIONS',
+  POST: 'POST',
+});
 
-const SERVICE_LABELS = {
-  exteriorWindows: "Nettoyage de vitres extérieur",
-  interiorWindows: "Nettoyage de vitres intérieur",
-  gutterCleaning: "Vidage de gouttières",
-};
+const HTTP_STATUS = Object.freeze({
+  OK: 200,
+  NO_CONTENT: 204,
+  BAD_REQUEST: 400,
+  FORBIDDEN: 403,
+  METHOD_NOT_ALLOWED: 405,
+  BAD_GATEWAY: 502,
+  INTERNAL_SERVER_ERROR: 500,
+});
 
-const BUILDING_TYPE_LABELS = {
-  residential: "Résidentiel",
-  commercial: "Commercial",
-  industrial: "Industriel",
-};
+const CONTENT_TYPE = Object.freeze({
+  JSON: 'application/json',
+});
 
-const TELEGRAM_MAX_LENGTH = 4096;
+const TELEGRAM = Object.freeze({
+  API_BASE_URL: 'https://api.telegram.org',
+  SEND_MESSAGE_PATH: 'sendMessage',
+  PARSE_MODE: Object.freeze({
+    HTML: 'HTML',
+  }),
+  MAX_MESSAGE_LENGTH: 4096,
+});
 
-const escapeHtml = (value) =>
-  value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+const RESPONSE_MESSAGE = Object.freeze({
+  METHOD_NOT_ALLOWED: 'Method not allowed',
+  INVALID_REQUEST: 'Invalid request',
+  FORBIDDEN_ORIGIN: 'Forbidden origin',
+  SERVER_ERROR: 'Server error',
+});
 
-const toSafeString = (value) => {
-  if (typeof value !== "string") {
-    return "";
+const FALLBACK_LABEL = Object.freeze({
+  UNKNOWN: 'Non précisé',
+  NO_MESSAGE: 'Aucun message.',
+  NO_SERVICE: 'Aucun service sélectionné',
+  NO_ADDRESS: 'Non précisée',
+});
+
+const FIELD_LIMITS = Object.freeze({
+  name: 120,
+  email: 160,
+  phone: 40,
+  address: 200,
+  city: 100,
+  floors: 40,
+  message: 2500,
+});
+
+const BUILDING_TYPE_LABELS = Object.freeze({
+  residential: 'Résidentiel',
+  commercial: 'Commercial',
+  industrial: 'Industriel',
+});
+
+const SERVICE_LABELS = Object.freeze({
+  exteriorWindows: 'Nettoyage de vitres extérieur',
+  interiorWindows: 'Nettoyage de vitres intérieur',
+  gutterCleaning: 'Vidage de gouttières',
+});
+
+const SERVICE_KEYS = Object.freeze(Object.keys(SERVICE_LABELS));
+const BUILDING_TYPE_KEYS = Object.freeze(Object.keys(BUILDING_TYPE_LABELS));
+
+/**
+ * @typedef {Object} SubmissionPayload
+ * @property {string} name
+ * @property {string} email
+ * @property {string} phone
+ * @property {string} address
+ * @property {string} city
+ * @property {string} buildingType
+ * @property {string} floors
+ * @property {string} message
+ * @property {Record<string, boolean>} services
+ */
+
+class AppError extends Error {
+  /**
+   * @param {number} statusCode
+   * @param {string} publicMessage
+   * @param {string} code
+   */
+  constructor(statusCode, publicMessage, code) {
+    super(publicMessage);
+    this.name = 'AppError';
+    this.statusCode = statusCode;
+    this.publicMessage = publicMessage;
+    this.code = code;
   }
-  return value.trim();
-};
+}
 
-const truncate = (value, maxLength) => {
-  if (value.length <= maxLength) {
+/**
+ * @param {unknown} value
+ * @returns {value is Record<string, unknown>}
+ */
+function isPlainObject(value) {
+  return Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+}
+
+/**
+ * @param {unknown} value
+ * @returns {string}
+ */
+function toTrimmedString(value) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+/**
+ * @param {unknown} value
+ * @param {number} maxLength
+ * @returns {string}
+ */
+function toBoundedString(value, maxLength) {
+  const normalized = toTrimmedString(value);
+  return normalized.slice(0, maxLength);
+}
+
+/**
+ * @param {Record<string, unknown> | undefined} headers
+ * @param {string} name
+ * @returns {string}
+ */
+function getHeaderValue(headers, name) {
+  if (!isPlainObject(headers)) {
+    return '';
+  }
+
+  const target = name.toLowerCase();
+
+  for (const [key, value] of Object.entries(headers)) {
+    if (key.toLowerCase() !== target) {
+      continue;
+    }
+
+    if (Array.isArray(value)) {
+      return toTrimmedString(String(value[0] || ''));
+    }
+
+    return toTrimmedString(String(value));
+  }
+
+  return '';
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function truncate(value) {
+  if (value.length <= TELEGRAM.MAX_MESSAGE_LENGTH) {
     return value;
   }
-  const suffix = "\n...[contenu tronqué]";
-  return `${value.slice(0, Math.max(0, maxLength - suffix.length))}${suffix}`;
-};
 
-const safeErrorMessage = (error) =>
-  error instanceof Error ? error.message : String(error);
+  const suffix = '\n...[message tronqué]';
+  return `${value.slice(0, TELEGRAM.MAX_MESSAGE_LENGTH - suffix.length)}${suffix}`;
+}
 
-const getRequestId = (event) => {
-  const headers = event?.headers;
-  if (!headers || typeof headers !== "object") {
-    return "";
+/**
+ * @param {string} email
+ * @returns {boolean}
+ */
+function isLikelyEmail(email) {
+  if (!email) {
+    return false;
+  }
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+/**
+ * @param {unknown} rawServices
+ * @returns {Record<string, boolean>}
+ */
+function normalizeServices(rawServices) {
+  if (!isPlainObject(rawServices)) {
+    return {};
   }
 
-  const value = headers["x-nf-request-id"] ?? headers["X-Nf-Request-Id"] ?? "";
-  return toSafeString(Array.isArray(value) ? String(value[0]) : String(value));
-};
+  /** @type {Record<string, boolean>} */
+  const normalized = {};
 
-const formatServices = (services) => {
-  if (!services || typeof services !== "object") {
-    return "Aucun service sélectionné";
+  for (const key of SERVICE_KEYS) {
+    normalized[key] = Boolean(rawServices[key]);
   }
 
-  const selectedServices = Object.entries(SERVICE_LABELS)
-    .filter(([key]) => Boolean(services[key]))
-    .map(([, label]) => `• ${escapeHtml(label)}`);
+  return normalized;
+}
 
-  if (selectedServices.length === 0) {
-    return "Aucun service sélectionné";
+/**
+ * @param {unknown} rawPayload
+ * @returns {SubmissionPayload}
+ */
+function normalizePayload(rawPayload) {
+  if (!isPlainObject(rawPayload)) {
+    throw new AppError(
+      HTTP_STATUS.BAD_REQUEST,
+      RESPONSE_MESSAGE.INVALID_REQUEST,
+      'INVALID_PAYLOAD_SHAPE'
+    );
   }
 
-  return selectedServices.join("\n");
-};
+  const buildingTypeRaw = toBoundedString(rawPayload.buildingType, 40);
+  const buildingType = BUILDING_TYPE_KEYS.includes(buildingTypeRaw)
+    ? buildingTypeRaw
+    : '';
 
-const buildTelegramMessage = (payload) => {
-  const name = escapeHtml(toSafeString(payload.name));
-  const email = escapeHtml(toSafeString(payload.email));
-  const phone = escapeHtml(toSafeString(payload.phone));
-  const address = escapeHtml(toSafeString(payload.address));
-  const city = escapeHtml(toSafeString(payload.city));
-  const floors = escapeHtml(toSafeString(payload.floors));
-  const messageDetails = escapeHtml(toSafeString(payload.message) || "Aucun message.");
-  const buildingTypeValue = toSafeString(payload.buildingType);
-  const buildingType = escapeHtml(
-    BUILDING_TYPE_LABELS[buildingTypeValue] || buildingTypeValue || "Non précisé"
-  );
-  const services = formatServices(payload.services);
+  const normalized = {
+    name: toBoundedString(rawPayload.name, FIELD_LIMITS.name),
+    email: toBoundedString(rawPayload.email, FIELD_LIMITS.email),
+    phone: toBoundedString(rawPayload.phone, FIELD_LIMITS.phone),
+    address: toBoundedString(rawPayload.address, FIELD_LIMITS.address),
+    city: toBoundedString(rawPayload.city, FIELD_LIMITS.city),
+    buildingType,
+    floors: toBoundedString(rawPayload.floors, FIELD_LIMITS.floors),
+    message: toBoundedString(rawPayload.message, FIELD_LIMITS.message),
+    services: normalizeServices(rawPayload.services),
+  };
+
+  if (normalized.email && !isLikelyEmail(normalized.email)) {
+    normalized.email = '';
+  }
+
+  return normalized;
+}
+
+/**
+ * @param {Record<string, boolean>} services
+ * @returns {string}
+ */
+function formatServices(services) {
+  const selected = SERVICE_KEYS
+    .filter((key) => services[key])
+    .map((key) => `• ${escapeHtml(SERVICE_LABELS[key])}`);
+
+  return selected.length > 0 ? selected.join('\n') : FALLBACK_LABEL.NO_SERVICE;
+}
+
+/**
+ * @param {SubmissionPayload} payload
+ * @returns {string}
+ */
+function buildTelegramMessage(payload) {
+  const safeName = escapeHtml(payload.name || FALLBACK_LABEL.UNKNOWN);
+  const safePhone = escapeHtml(payload.phone || FALLBACK_LABEL.UNKNOWN);
+  const safeEmail = escapeHtml(payload.email || FALLBACK_LABEL.UNKNOWN);
+  const safeAddress = escapeHtml(payload.address || FALLBACK_LABEL.NO_ADDRESS);
+  const safeCity = escapeHtml(payload.city || FALLBACK_LABEL.NO_ADDRESS);
+  const safeFloors = escapeHtml(payload.floors);
+  const safeMessage = escapeHtml(payload.message || FALLBACK_LABEL.NO_MESSAGE);
+  const buildingLabel = payload.buildingType
+    ? BUILDING_TYPE_LABELS[payload.buildingType]
+    : FALLBACK_LABEL.UNKNOWN;
+  const safeBuildingType = escapeHtml(buildingLabel || FALLBACK_LABEL.UNKNOWN);
+  const servicesText = formatServices(payload.services);
+
   const lines = [
-    "<b>Nouvelle soumission Mr. Clear</b>",
-    "",
-    "<b>Client</b>",
-    `Nom: ${name || "Non précisé"}`,
-    `Téléphone: ${phone || "Non précisé"}`,
-    `Courriel: ${email || "Non précisé"}`,
-    "",
-    "<b>Adresse</b>",
-    `Adresse: ${address || "Non précisée"}`,
-    `Ville: ${city || "Non précisée"}`,
-    `Type de bâtiment: ${buildingType}`,
+    '<b>Nouvelle soumission Mr. Clear</b>',
+    '',
+    '<b>Client</b>',
+    `Nom: ${safeName}`,
+    `Téléphone: ${safePhone}`,
+    `Courriel: ${safeEmail}`,
+    '',
+    '<b>Adresse</b>',
+    `Adresse: ${safeAddress}`,
+    `Ville: ${safeCity}`,
+    `Type de bâtiment: ${safeBuildingType}`,
   ];
 
-  if (floors) lines.push(`Étages: ${floors}`);
+  if (safeFloors) {
+    lines.push(`Étages: ${safeFloors}`);
+  }
 
-  lines.push(
-    "",
-    "<b>Services demandés</b>",
-    services,
-    "",
-    "<b>Détails</b>",
-    messageDetails
-  );
+  lines.push('', '<b>Services demandés</b>', servicesText, '', '<b>Détails</b>', safeMessage);
 
-  return lines.join("\n");
-};
+  return truncate(lines.join('\n'));
+}
 
-const buildErrorAlertMessage = ({ payload, errorMessage, requestId }) => {
-  const escapedError = escapeHtml(toSafeString(errorMessage) || "Erreur inconnue");
-  const escapedDate = escapeHtml(new Date().toISOString());
-  const escapedRequestId = escapeHtml(toSafeString(requestId));
-  const escapedPayload = escapeHtml(JSON.stringify(payload ?? {}, null, 2));
-  const truncatedPayload = truncate(escapedPayload, 1600);
-  const submissionPreview = buildTelegramMessage(payload ?? {});
+/**
+ * @param {string | undefined} rawOrigins
+ * @returns {string[]}
+ */
+function parseAllowedOrigins(rawOrigins) {
+  return (rawOrigins || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
 
-  const lines = [
-    "<b>Alerte erreur soumission</b>",
-    `Date: ${escapedDate}`,
-    escapedRequestId ? `Request ID: ${escapedRequestId}` : "",
-    "",
-    "<b>Erreur serveur</b>",
-    escapedError,
-    "",
-    "<b>Données de la soumission</b>",
-    submissionPreview,
-    "",
-    "<b>Payload brut</b>",
-    `<pre>${truncatedPayload}</pre>`,
-  ];
+/**
+ * @param {string} requestOrigin
+ * @param {string[]} allowedOrigins
+ * @returns {boolean}
+ */
+function isOriginAllowed(requestOrigin, allowedOrigins) {
+  if (allowedOrigins.length === 0) {
+    return true;
+  }
 
-  return truncate(lines.filter(Boolean).join("\n"), TELEGRAM_MAX_LENGTH - 40);
-};
+  return Boolean(requestOrigin) && allowedOrigins.includes(requestOrigin);
+}
 
-const sendTelegramMessage = async ({ botToken, channelId, text }) => {
-  const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-    method: "POST",
+/**
+ * @param {string} requestOrigin
+ * @param {string[]} allowedOrigins
+ * @returns {string}
+ */
+function resolveCorsOrigin(requestOrigin, allowedOrigins) {
+  if (allowedOrigins.length === 0) {
+    return '*';
+  }
+
+  return isOriginAllowed(requestOrigin, allowedOrigins) ? requestOrigin : 'null';
+}
+
+/**
+ * @param {string} origin
+ * @returns {Record<string, string>}
+ */
+function buildCorsHeaders(origin) {
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': `${HTTP_METHOD.POST}, ${HTTP_METHOD.OPTIONS}`,
+    'Content-Type': CONTENT_TYPE.JSON,
+  };
+}
+
+/**
+ * @param {number} statusCode
+ * @param {Record<string, unknown>} body
+ * @param {string} origin
+ * @returns {{statusCode: number, headers: Record<string, string>, body: string}}
+ */
+function jsonResponse(statusCode, body, origin) {
+  return {
+    statusCode,
+    headers: buildCorsHeaders(origin),
+    body: JSON.stringify(body),
+  };
+}
+
+/**
+ * @param {string} origin
+ * @returns {{statusCode: number, headers: Record<string, string>, body: string}}
+ */
+function noContentResponse(origin) {
+  return {
+    statusCode: HTTP_STATUS.NO_CONTENT,
+    headers: buildCorsHeaders(origin),
+    body: '',
+  };
+}
+
+/**
+ * @param {Record<string, string | undefined>} env
+ * @returns {{botToken: string, channelId: string}}
+ */
+function getTelegramConfig(env) {
+  const botToken = toTrimmedString(env.TELEGRAM_BOT_TOKEN);
+  const channelId = toTrimmedString(env.TELEGRAM_CHANNEL_ID);
+
+  if (!botToken || !channelId) {
+    throw new AppError(
+      HTTP_STATUS.INTERNAL_SERVER_ERROR,
+      RESPONSE_MESSAGE.SERVER_ERROR,
+      'MISSING_TELEGRAM_CONFIG'
+    );
+  }
+
+  return { botToken, channelId };
+}
+
+/**
+ * @param {unknown} rawBody
+ * @returns {unknown}
+ */
+function parseRequestBody(rawBody) {
+  if (!rawBody) {
+    return {};
+  }
+
+  if (typeof rawBody === 'string') {
+    try {
+      return JSON.parse(rawBody);
+    } catch {
+      throw new AppError(
+        HTTP_STATUS.BAD_REQUEST,
+        RESPONSE_MESSAGE.INVALID_REQUEST,
+        'INVALID_JSON'
+      );
+    }
+  }
+
+  return rawBody;
+}
+
+/**
+ * @param {{botToken: string, channelId: string}} config
+ * @param {string} text
+ * @returns {Promise<void>}
+ */
+async function sendTelegramMessage(config, text) {
+  const url = `${TELEGRAM.API_BASE_URL}/bot${config.botToken}/${TELEGRAM.SEND_MESSAGE_PATH}`;
+
+  const response = await fetch(url, {
+    method: HTTP_METHOD.POST,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': CONTENT_TYPE.JSON,
     },
     body: JSON.stringify({
-      chat_id: channelId,
+      chat_id: config.channelId,
       text,
-      parse_mode: "HTML",
+      parse_mode: TELEGRAM.PARSE_MODE.HTML,
       disable_web_page_preview: true,
     }),
   });
 
-  const responseText = await response.text();
-
   if (!response.ok) {
-    throw new Error(`Messaging provider error (${response.status}): ${responseText}`);
-  }
-};
-
-const sendErrorAlertIfPossible = async ({
-  botToken,
-  channelId,
-  payload,
-  errorMessage,
-  requestId,
-  context,
-}) => {
-  if (!botToken || !channelId) {
-    return;
-  }
-
-  const alertText = buildErrorAlertMessage({ payload, errorMessage, requestId });
-
-  try {
-    await sendTelegramMessage({ botToken, channelId, text: alertText });
-  } catch (alertError) {
-    console.error("Failed to send error alert", {
-      context,
-      message: safeErrorMessage(alertError),
+    const providerError = await response.text();
+    logError('TELEGRAM_API_ERROR', {
+      status: response.status,
+      response: providerError.slice(0, 500),
     });
+
+    throw new AppError(
+      HTTP_STATUS.BAD_GATEWAY,
+      RESPONSE_MESSAGE.SERVER_ERROR,
+      'TELEGRAM_SEND_FAILED'
+    );
   }
-};
+}
 
-const parseBody = (body) => {
-  if (!body) return {};
-  if (typeof body === "string") return JSON.parse(body);
-  return body;
-};
+/**
+ * @param {string} code
+ * @param {Record<string, unknown>} [details]
+ */
+function logError(code, details = {}) {
+  console.error('[send-quote]', {
+    code,
+    ...details,
+  });
+}
 
+/**
+ * @param {unknown} error
+ * @returns {AppError}
+ */
+function toAppError(error) {
+  if (error instanceof AppError) {
+    return error;
+  }
+
+  return new AppError(
+    HTTP_STATUS.INTERNAL_SERVER_ERROR,
+    RESPONSE_MESSAGE.SERVER_ERROR,
+    'UNEXPECTED_ERROR'
+  );
+}
+
+/**
+ * @param {{headers?: Record<string, unknown>, httpMethod?: string, body?: unknown}} event
+ */
 export async function handler(event) {
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 204,
-      headers: CORS_HEADERS,
-      body: "",
-    };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
-
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  const channelId = process.env.TELEGRAM_CHANNEL_ID;
-
-  if (!botToken || !channelId) {
-    console.error("Messaging provider configuration is missing", {
-      hasBotToken: Boolean(botToken),
-      hasChannelId: Boolean(channelId),
-    });
-    return {
-      statusCode: 500,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({
-        error: "Server error",
-      }),
-    };
-  }
-
-  let payload;
-  try {
-    payload = parseBody(event.body);
-  } catch (error) {
-    await sendErrorAlertIfPossible({
-      botToken,
-      channelId,
-      payload: { rawBody: event.body },
-      errorMessage: `Invalid request payload: ${safeErrorMessage(error)}`,
-      requestId: getRequestId(event),
-      context: "parse-body",
-    });
-
-    return {
-      statusCode: 400,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Invalid request" }),
-    };
-  }
-
-  const text = buildTelegramMessage(payload);
-  const requestId = getRequestId(event);
+  const requestOrigin = getHeaderValue(event?.headers, 'origin');
+  const allowedOrigins = parseAllowedOrigins(process.env.ALLOWED_ORIGINS);
+  const corsOrigin = resolveCorsOrigin(requestOrigin, allowedOrigins);
 
   try {
-    await sendTelegramMessage({ botToken, channelId, text });
+    const method = toTrimmedString(event?.httpMethod).toUpperCase();
 
-    return {
-      statusCode: 200,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ ok: true }),
-    };
+    if (method === HTTP_METHOD.OPTIONS) {
+      if (!isOriginAllowed(requestOrigin, allowedOrigins)) {
+        return jsonResponse(
+          HTTP_STATUS.FORBIDDEN,
+          { error: RESPONSE_MESSAGE.FORBIDDEN_ORIGIN },
+          corsOrigin
+        );
+      }
+
+      return noContentResponse(corsOrigin);
+    }
+
+    if (method !== HTTP_METHOD.POST) {
+      return jsonResponse(
+        HTTP_STATUS.METHOD_NOT_ALLOWED,
+        { error: RESPONSE_MESSAGE.METHOD_NOT_ALLOWED },
+        corsOrigin
+      );
+    }
+
+    if (!isOriginAllowed(requestOrigin, allowedOrigins)) {
+      return jsonResponse(
+        HTTP_STATUS.FORBIDDEN,
+        { error: RESPONSE_MESSAGE.FORBIDDEN_ORIGIN },
+        corsOrigin
+      );
+    }
+
+    const telegramConfig = getTelegramConfig(process.env);
+    const requestBody = parseRequestBody(event?.body);
+    const payload = normalizePayload(requestBody);
+    const message = buildTelegramMessage(payload);
+
+    await sendTelegramMessage(telegramConfig, message);
+
+    return jsonResponse(HTTP_STATUS.OK, { ok: true }, corsOrigin);
   } catch (error) {
-    const errorMessage = safeErrorMessage(error);
-    console.error("Send quote function error:", {
-      message: errorMessage,
-      requestId,
+    const appError = toAppError(error);
+
+    logError(appError.code, {
+      statusCode: appError.statusCode,
+      message: appError.message,
     });
 
-    await sendErrorAlertIfPossible({
-      botToken,
-      channelId,
-      payload,
-      errorMessage,
-      requestId,
-      context: "send-primary-message",
-    });
-
-    const statusCode = errorMessage.includes("provider error (") ? 502 : 500;
-
-    console.error("Send quote response error:", {
-      statusCode,
-      requestId,
-    });
-
-    return {
-      statusCode,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: "Server error" }),
-    };
+    return jsonResponse(
+      appError.statusCode,
+      { error: appError.publicMessage },
+      corsOrigin
+    );
   }
 }

@@ -3,6 +3,9 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import sitemapPlugin from "vite-plugin-sitemap";
 
+const resolvedPort = Number(process.env.VITE_PORT ?? "8080");
+const devPort = Number.isFinite(resolvedPort) ? resolvedPort : 8080;
+
 export default defineConfig({
   build: {
     outDir: "dist",
@@ -10,7 +13,7 @@ export default defineConfig({
   },
   server: {
     host: "::",
-    port: 8080,
+    port: devPort,
   },
   plugins: [
     react(),
