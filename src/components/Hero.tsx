@@ -14,12 +14,16 @@ const Hero = ({ title, subtitle }: HeroProps) => {
   const heroSubtitle = subtitle ?? DEFAULT_HOME_COPY.heroSubtitle;
 
   return (
-    <section className="relative bg-brand-blue text-white">
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1496307653780-42ee777d4833?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')" }}
+    <section className="relative min-h-[80vh] bg-brand-blue text-white md:min-h-[95vh]">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-20 md:hidden"
+        style={{ backgroundImage: "url('/hero-phone.jpeg')" }}
       ></div>
-      <div className="container relative mx-auto py-20 md:py-32 px-4">
+      <div
+        className="absolute inset-0 hidden bg-cover bg-center opacity-20 md:block"
+        style={{ backgroundImage: "url('/hero.jpeg')" }}
+      ></div>
+      <div className="container relative mx-auto flex min-h-[80vh] items-center px-4 py-20 md:min-h-[95vh] md:py-32">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
             {heroTitle}
