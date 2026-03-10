@@ -53,3 +53,5 @@ bun.lockb
 
 # Optional - static assets if dynamically built
 /assets/
+
+.netlify/
