@@ -16,11 +16,11 @@ const Hero = ({ title, subtitle }: HeroProps) => {
   return (
     <section className="relative min-h-[80vh] bg-brand-blue text-white md:min-h-[95vh]">
       <div
-        className="absolute inset-0 bg-cover bg-center opacity-20 md:hidden"
+        className="absolute inset-0 bg-cover bg-center opacity-90 md:hidden"
         style={{ backgroundImage: "url('/hero-phone.jpeg')" }}
       ></div>
       <div
-        className="absolute inset-0 hidden bg-cover bg-center opacity-20 md:block"
+        className="absolute inset-0 hidden bg-cover bg-center opacity-90 md:block"
         style={{ backgroundImage: "url('/hero.jpeg')" }}
       ></div>
       <div className="container relative mx-auto flex min-h-[80vh] items-center px-4 py-20 md:min-h-[95vh] md:py-32">
