@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { isHomeVariantPath } from "@/lib/localize-service-area";
 
 interface FooterLinkProps {
   id: string;
@@ -20,7 +21,7 @@ const FooterLink = ({ id, children, className = "" }: FooterLinkProps) => {
       }
     };
 
-    if (location.pathname !== "/") {
+    if (!isHomeVariantPath(location.pathname)) {
       navigate(`/#${id}`);
       setTimeout(scrollToTarget, 100); 
     } else {

@@ -1,8 +1,13 @@
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
-const About = () => {
+interface AboutProps {
+  introParagraph?: string;
+}
+
+const About = ({ introParagraph = DEFAULT_HOME_COPY.aboutParagraph }: AboutProps) => {
   const navigate = useNavigate();
 
   return (
@@ -28,7 +33,7 @@ const About = () => {
             <span className="text-brand-blue font-medium">Pourquoi Nous Choisir</span>
             <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-6">L'excellence en matière de nettoyage de vitres</h2>
             <p className="text-gray-700 mb-6 text-lg">
-              Depuis plus de 10 ans, nous offrons un service exceptionnel à nos clients résidentiels et commerciaux dans toute la région du Québec.
+              {introParagraph}
             </p>
             
             <div className="space-y-4 mb-8">

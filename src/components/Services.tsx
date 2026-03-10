@@ -1,7 +1,14 @@
 import ServiceCard from "@/components/services/ServiceCard";
 import { SERVICES } from "@/consts/services";
+import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
-const Services = () => {
+interface ServicesProps {
+  introParagraph?: string;
+}
+
+const Services = ({
+  introParagraph = DEFAULT_HOME_COPY.serviceIntro,
+}: ServicesProps) => {
   return (
     <section id="services" className="bg-brand-gray py-20">
       <div className="container mx-auto px-4">
@@ -11,9 +18,7 @@ const Services = () => {
             Solutions de nettoyage complètes
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Nous offrons des services professionnels à Laval, Montréal et toute la
-            Rive-Nord (Terrebonne, Repentigny, Mascouche, L'Assomption, Boisbriand,
-            Lorraine, Rosemère, Bois-des-Filion).
+            {introParagraph}
           </p>
         </div>
 

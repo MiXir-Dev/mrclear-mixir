@@ -1,9 +1,18 @@
 
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
-const Hero = () => {
+interface HeroProps {
+  title?: string;
+  subtitle?: string;
+}
+
+const Hero = ({ title, subtitle }: HeroProps) => {
   const navigate = useNavigate();
+  const heroTitle = title ?? DEFAULT_HOME_COPY.heroTitle;
+  const heroSubtitle = subtitle ?? DEFAULT_HOME_COPY.heroSubtitle;
+
   return (
     <section className="relative bg-brand-blue text-white">
       <div 
@@ -13,11 +22,18 @@ const Hero = () => {
       <div className="container relative mx-auto py-20 md:py-32 px-4">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            Nettoyage de vitres professionnel sur la Rive-Nord, Laval et Montréal 
+            {heroTitle}
           </h1>
           <p className="text-xl md:text-2xl mb-8 font-light">
-            Service complet pour résidences et commerces. <br className="hidden md:block" />
-            Des vitres impeccables, garanties.
+            {subtitle ? (
+              heroSubtitle
+            ) : (
+              <>
+                Service complet pour résidences et commerces.{" "}
+                <br className="hidden md:block" />
+                Des vitres impeccables, garanties.
+              </>
+            )}
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 

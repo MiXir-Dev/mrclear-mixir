@@ -8,8 +8,17 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
-const CTA = () => {
+interface CTAProps {
+  heading?: string;
+  subheading?: string;
+}
+
+const CTA = ({
+  heading = DEFAULT_HOME_COPY.ctaHeading,
+  subheading = DEFAULT_HOME_COPY.ctaSubheading,
+}: CTAProps) => {
   const navigate = useNavigate();
   
   // Images pour le carousel
@@ -30,10 +39,10 @@ const CTA = () => {
   <div className="container mx-auto px-4 relative z-10">
     <div className="flex flex-col items-center text-center">
       <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-        Prêt à transformer l'apparence de votre propriété ?
+        {heading}
       </h2>
       <p className="text-white/80 max-w-2xl text-lg">
-        Un service professionnel qui fait la différence visible. Contactez-nous dès aujourd'hui et voyez par vous-même !
+        {subheading}
       </p>
     </div>
 

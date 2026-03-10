@@ -1,7 +1,14 @@
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactMap from "@/components/contact/ContactMap";
+import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
-const Contact = () => {
+interface ContactProps {
+  supportingCopy?: string;
+}
+
+const Contact = ({
+  supportingCopy = DEFAULT_HOME_COPY.contactSupportingCopy,
+}: ContactProps) => {
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -11,8 +18,7 @@ const Contact = () => {
             Contactez notre équipe
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Besoin d'informations supplémentaires ou prêt à programmer un service ?
-            Contactez-nous par téléphone, courriel ou via notre formulaire en ligne.
+            {supportingCopy}
           </p>
         </div>
 

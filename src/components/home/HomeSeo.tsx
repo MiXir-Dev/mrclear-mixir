@@ -1,21 +1,28 @@
 import { Helmet } from "react-helmet";
-import { HOME_SEO, HOME_STRUCTURED_DATA } from "@/consts/seo";
+import { ServiceAreaPageContent } from "@/consts/service-area-content";
+import { getHomeSeo } from "@/components/home/getHomeSeo";
 
-const HomeSeo = () => {
+interface HomeSeoProps {
+  serviceArea?: ServiceAreaPageContent;
+}
+
+const HomeSeo = ({ serviceArea }: HomeSeoProps) => {
+  const seo = getHomeSeo(serviceArea);
+
   return (
     <Helmet>
-      <title>{HOME_SEO.title}</title>
-      <meta name="description" content={HOME_SEO.description} />
-      <meta name="keywords" content={HOME_SEO.keywords} />
-      <meta property="og:title" content={HOME_SEO.ogTitle} />
-      <meta property="og:description" content={HOME_SEO.ogDescription} />
+      <title>{seo.title}</title>
+      <meta name="description" content={seo.description} />
+      <meta name="keywords" content={seo.keywords} />
+      <meta property="og:title" content={seo.ogTitle} />
+      <meta property="og:description" content={seo.ogDescription} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={HOME_SEO.ogUrl} />
-      <meta name="geo.region" content={HOME_SEO.geoRegion} />
-      <meta name="geo.placename" content={HOME_SEO.geoPlacename} />
-      <link rel="canonical" href={HOME_SEO.canonicalUrl} />
+      <meta property="og:url" content={seo.ogUrl} />
+      <meta name="geo.region" content={seo.geoRegion} />
+      <meta name="geo.placename" content={seo.geoPlacename} />
+      <link rel="canonical" href={seo.canonicalUrl} />
       <script type="application/ld+json">
-        {JSON.stringify(HOME_STRUCTURED_DATA)}
+        {JSON.stringify(seo.structuredData)}
       </script>
     </Helmet>
   );

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DesktopNav from "@/components/header/DesktopNav";
 import Logo from "@/components/header/Logo";
 import MobileMenu from "@/components/header/MobileMenu";
+import { isHomeVariantPath } from "@/lib/localize-service-area";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -36,7 +37,7 @@ const Header = () => {
       }
     };
 
-    if (location.pathname !== "/") {
+    if (!isHomeVariantPath(location.pathname)) {
       navigate(`/#${id}`);
       setTimeout(scrollToId, 100);
     } else {
