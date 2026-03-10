@@ -17,6 +17,8 @@ const BUILDING_TYPE_LABELS = {
   industrial: "Industriel",
 };
 
+const TELEGRAM_MAX_LENGTH = 4096;
+
 const escapeHtml = (value) =>
   value
     .replace(/&/g, "&amp;")
@@ -28,6 +30,27 @@ const toSafeString = (value) => {
     return "";
   }
   return value.trim();
+};
+
+const truncate = (value, maxLength) => {
+  if (value.length <= maxLength) {
+    return value;
+  }
+  const suffix = "\n...[contenu tronqué]";
+  return `${value.slice(0, Math.max(0, maxLength - suffix.length))}${suffix}`;
+};
+
+const safeErrorMessage = (error) =>
+  error instanceof Error ? error.message : String(error);
+
+const getRequestId = (event) => {
+  const headers = event?.headers;
+  if (!headers || typeof headers !== "object") {
+    return "";
+  }
+
+  const value = headers["x-nf-request-id"] ?? headers["X-Nf-Request-Id"] ?? "";
+  return toSafeString(Array.isArray(value) ? String(value[0]) : String(value));
 };
 
 const formatServices = (services) => {
@@ -73,9 +96,7 @@ const buildTelegramMessage = (payload) => {
     `Type de bâtiment: ${buildingType}`,
   ];
 
-  if (floors) {
-    lines.push(`Étages: ${floors}`);
-  }
+  if (floors) lines.push(`Étages: ${floors}`);
 
   lines.push(
     "",
@@ -89,13 +110,80 @@ const buildTelegramMessage = (payload) => {
   return lines.join("\n");
 };
 
+const buildErrorAlertMessage = ({ payload, errorMessage, requestId }) => {
+  const escapedError = escapeHtml(toSafeString(errorMessage) || "Erreur inconnue");
+  const escapedDate = escapeHtml(new Date().toISOString());
+  const escapedRequestId = escapeHtml(toSafeString(requestId));
+  const escapedPayload = escapeHtml(JSON.stringify(payload ?? {}, null, 2));
+  const truncatedPayload = truncate(escapedPayload, 1600);
+  const submissionPreview = buildTelegramMessage(payload ?? {});
+
+  const lines = [
+    "<b>Alerte erreur soumission</b>",
+    `Date: ${escapedDate}`,
+    escapedRequestId ? `Request ID: ${escapedRequestId}` : "",
+    "",
+    "<b>Erreur serveur</b>",
+    escapedError,
+    "",
+    "<b>Données de la soumission</b>",
+    submissionPreview,
+    "",
+    "<b>Payload brut</b>",
+    `<pre>${truncatedPayload}</pre>`,
+  ];
+
+  return truncate(lines.filter(Boolean).join("\n"), TELEGRAM_MAX_LENGTH - 40);
+};
+
+const sendTelegramMessage = async ({ botToken, channelId, text }) => {
+  const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      chat_id: channelId,
+      text,
+      parse_mode: "HTML",
+      disable_web_page_preview: true,
+    }),
+  });
+
+  const responseText = await response.text();
+
+  if (!response.ok) {
+    throw new Error(`Messaging provider error (${response.status}): ${responseText}`);
+  }
+};
+
+const sendErrorAlertIfPossible = async ({
+  botToken,
+  channelId,
+  payload,
+  errorMessage,
+  requestId,
+  context,
+}) => {
+  if (!botToken || !channelId) {
+    return;
+  }
+
+  const alertText = buildErrorAlertMessage({ payload, errorMessage, requestId });
+
+  try {
+    await sendTelegramMessage({ botToken, channelId, text: alertText });
+  } catch (alertError) {
+    console.error("Failed to send error alert", {
+      context,
+      message: safeErrorMessage(alertError),
+    });
+  }
+};
+
 const parseBody = (body) => {
-  if (!body) {
-    return {};
-  }
-  if (typeof body === "string") {
-    return JSON.parse(body);
-  }
+  if (!body) return {};
+  if (typeof body === "string") return JSON.parse(body);
   return body;
 };
 
@@ -120,7 +208,10 @@ export async function handler(event) {
   const channelId = process.env.TELEGRAM_CHANNEL_ID;
 
   if (!botToken || !channelId) {
-    console.error("Messaging provider configuration is missing");
+    console.error("Messaging provider configuration is missing", {
+      hasBotToken: Boolean(botToken),
+      hasChannelId: Boolean(channelId),
+    });
     return {
       statusCode: 500,
       headers: CORS_HEADERS,
@@ -134,6 +225,15 @@ export async function handler(event) {
   try {
     payload = parseBody(event.body);
   } catch (error) {
+    await sendErrorAlertIfPossible({
+      botToken,
+      channelId,
+      payload: { rawBody: event.body },
+      errorMessage: `Invalid request payload: ${safeErrorMessage(error)}`,
+      requestId: getRequestId(event),
+      context: "parse-body",
+    });
+
     return {
       statusCode: 400,
       headers: CORS_HEADERS,
@@ -142,33 +242,10 @@ export async function handler(event) {
   }
 
   const text = buildTelegramMessage(payload);
+  const requestId = getRequestId(event);
 
   try {
-    const telegramResponse = await fetch(
-      `https://api.telegram.org/bot${botToken}/sendMessage`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          chat_id: channelId,
-          text,
-          parse_mode: "HTML",
-          disable_web_page_preview: true,
-        }),
-      }
-    );
-
-    if (!telegramResponse.ok) {
-      const telegramError = await telegramResponse.text();
-      console.error("Messaging provider API error:", telegramError);
-      return {
-        statusCode: 502,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: "Server error" }),
-      };
-    }
+    await sendTelegramMessage({ botToken, channelId, text });
 
     return {
       statusCode: 200,
@@ -176,9 +253,30 @@ export async function handler(event) {
       body: JSON.stringify({ ok: true }),
     };
   } catch (error) {
-    console.error("Send quote function error:", error);
+    const errorMessage = safeErrorMessage(error);
+    console.error("Send quote function error:", {
+      message: errorMessage,
+      requestId,
+    });
+
+    await sendErrorAlertIfPossible({
+      botToken,
+      channelId,
+      payload,
+      errorMessage,
+      requestId,
+      context: "send-primary-message",
+    });
+
+    const statusCode = errorMessage.includes("provider error (") ? 502 : 500;
+
+    console.error("Send quote response error:", {
+      statusCode,
+      requestId,
+    });
+
     return {
-      statusCode: 500,
+      statusCode,
       headers: CORS_HEADERS,
       body: JSON.stringify({ error: "Server error" }),
     };
