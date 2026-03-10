@@ -1,8 +1,8 @@
 import type React from "react";
 import { useState } from "react";
-import emailjs from "emailjs-com";
 import QuoteFormLayout from "@/components/quote/QuoteFormLayout";
 import { DEFAULT_QUOTE_FORM_DATA, QuoteFormData } from "@/consts/quote";
+import { CONTACT } from "@/consts/contact";
 import { useToast } from "@/components/ui/use-toast";
 
 const QuoteForm = () => {
@@ -37,51 +37,38 @@ const QuoteForm = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsSubmitting(true);
 
-    const formattedServices = Object.entries(formData.services)
-      .filter(([, checked]) => checked)
-      .map(([key]) => `- ${key.replace(/([A-Z])/g, " $1")}`)
-      .join("\n");
-
-    const templateParams = {
-      name: formData.name,
-      email: formData.email,
-      phone: formData.phone,
-      address: formData.address,
-      city: formData.city,
-      buildingType: formData.buildingType,
-      floors: formData.floors,
-      services: formattedServices || "Aucun service sélectionné",
-      message: formData.message || "Aucun message.",
-    };
-
-    emailjs
-      .send(
-        import.meta.env.VITE_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-        templateParams,
-        import.meta.env.VITE_EMAILJS_USER_ID
-      )
-      .then(() => {
-        toast({
-          title: "Demande envoyée",
-          description: "Votre devis a été transmis. Merci !",
-        });
-        setIsSubmitting(false);
-        setFormData(DEFAULT_QUOTE_FORM_DATA);
-      })
-      .catch((error) => {
-        console.error("Erreur envoi EmailJS:", error);
-        toast({
-          title: "Erreur",
-          description: "Une erreur est survenue. Veuillez réessayer.",
-          variant: "destructive",
-        });
-        setIsSubmitting(false);
+    try {
+      const response = await fetch("/.netlify/functions/send-quote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
+      if (!response.ok) {
+        throw new Error(`Erreur serveur: ${response.status}`);
+      }
+
+      toast({
+        title: "Demande envoyée",
+        description: "Votre devis a été transmis. Merci !",
+      });
+      setFormData(DEFAULT_QUOTE_FORM_DATA);
+    } catch (error) {
+      console.error("Erreur soumission:", error);
+      toast({
+        title: "Serveur indisponible",
+        description: `Nos serveurs ont un problème temporaire. Réessayez plus tard ou appelez-nous au ${CONTACT.phoneDisplay}.`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
