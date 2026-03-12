@@ -1,12 +1,45 @@
 import type React from "react";
 import { useState } from "react";
 import QuoteFormLayout from "@/components/quote/QuoteFormLayout";
-import { DEFAULT_QUOTE_FORM_DATA, QuoteFormData } from "@/consts/quote";
+import {
+  BUILDING_TYPES,
+  DEFAULT_QUOTE_FORM_DATA,
+  QuoteFormData,
+} from "@/consts/quote";
 import { CONTACT } from "@/consts/contact";
 import { useToast } from "@/components/ui/use-toast";
 
 const SUBMISSION_COOLDOWN_KEY = "quote_form_last_success_at";
 const SUBMISSION_COOLDOWN_MS = 30 * 60 * 1000;
+const PROFILE_STORAGE_KEY = "quote_form_profile_v1";
+const ADDRESS_VALIDATION_STORAGE_KEY = "quote_form_address_validated_v1";
+const BUILDING_TYPE_SET = new Set(BUILDING_TYPES.map((type) => type.value));
+const PROFILE_FIELDS = [
+  "name",
+  "email",
+  "phone",
+  "address",
+  "city",
+  "buildingType",
+  "floors",
+] as const;
+
+type ProfileField = (typeof PROFILE_FIELDS)[number];
+type StoredProfile = Pick<QuoteFormData, ProfileField>;
+
+const getDefaultProfile = (): StoredProfile => ({
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  city: "",
+  buildingType: DEFAULT_QUOTE_FORM_DATA.buildingType,
+  floors: "",
+});
+
+const isProfileField = (value: string): value is ProfileField => {
+  return PROFILE_FIELDS.includes(value as ProfileField);
+};
 
 const getSubmissionBlockedUntil = () => {
   try {
@@ -22,6 +55,89 @@ const getSubmissionBlockedUntil = () => {
     return blockedUntil > Date.now() ? blockedUntil : null;
   } catch {
     return null;
+  }
+};
+
+const readStoredProfile = (): StoredProfile => {
+  const fallback = getDefaultProfile();
+
+  if (typeof window === "undefined") {
+    return fallback;
+  }
+
+  try {
+    const rawValue = localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (!rawValue) {
+      return fallback;
+    }
+
+    const parsed = JSON.parse(rawValue) as Partial<StoredProfile> | null;
+    if (!parsed || typeof parsed !== "object") {
+      return fallback;
+    }
+
+    return {
+      name: typeof parsed.name === "string" ? parsed.name : fallback.name,
+      email: typeof parsed.email === "string" ? parsed.email : fallback.email,
+      phone: typeof parsed.phone === "string" ? parsed.phone : fallback.phone,
+      address:
+        typeof parsed.address === "string" ? parsed.address : fallback.address,
+      city: typeof parsed.city === "string" ? parsed.city : fallback.city,
+      buildingType:
+        typeof parsed.buildingType === "string" &&
+        BUILDING_TYPE_SET.has(parsed.buildingType)
+          ? parsed.buildingType
+          : fallback.buildingType,
+      floors:
+        typeof parsed.floors === "string" ? parsed.floors : fallback.floors,
+    };
+  } catch {
+    return fallback;
+  }
+};
+
+const persistProfile = (profile: StoredProfile) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+  } catch {
+    // Ignore storage write failure.
+  }
+};
+
+const updateStoredProfile = (partial: Partial<StoredProfile>) => {
+  const nextProfile = {
+    ...readStoredProfile(),
+    ...partial,
+  };
+  persistProfile(nextProfile);
+  return nextProfile;
+};
+
+const readAddressValidationFlag = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  try {
+    return localStorage.getItem(ADDRESS_VALIDATION_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
+
+const persistAddressValidationFlag = (isValid: boolean) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  try {
+    localStorage.setItem(ADDRESS_VALIDATION_STORAGE_KEY, isValid ? "1" : "0");
+  } catch {
+    // Ignore storage write failure.
   }
 };
 
@@ -43,11 +159,20 @@ const formatRetryHour = (timestamp: number) => {
 
 const QuoteForm = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState<QuoteFormData>(
-    DEFAULT_QUOTE_FORM_DATA
-  );
+  const [formData, setFormData] = useState<QuoteFormData>(() => ({
+    ...DEFAULT_QUOTE_FORM_DATA,
+    ...readStoredProfile(),
+  }));
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isAddressValidated, setIsAddressValidated] = useState(false);
+  const [isAddressValidated, setIsAddressValidated] = useState(() => {
+    const storedProfile = readStoredProfile();
+    return Boolean(storedProfile.address) && readAddressValidationFlag();
+  });
+
+  const handleAddressValidatedChange = (isValid: boolean) => {
+    setIsAddressValidated(isValid);
+    persistAddressValidationFlag(isValid);
+  };
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -56,7 +181,10 @@ const QuoteForm = () => {
   ) => {
     const { name, value } = event.target;
     if (name === "address") {
-      setIsAddressValidated(false);
+      handleAddressValidatedChange(false);
+    }
+    if (isProfileField(name)) {
+      updateStoredProfile({ [name]: value } as Partial<StoredProfile>);
     }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -84,10 +212,17 @@ const QuoteForm = () => {
     address: string;
     city: string;
   }) => {
+    const nextCity = city || formData.city;
+
+    updateStoredProfile({
+      address,
+      city: nextCity,
+    });
+
     setFormData((prev) => ({
       ...prev,
       address,
-      city: city || prev.city,
+      city: nextCity,
     }));
   };
 
@@ -135,8 +270,14 @@ const QuoteForm = () => {
         description: "Votre devis a été transmis. Merci !",
       });
       setSubmissionSuccessTimestamp();
-      setFormData(DEFAULT_QUOTE_FORM_DATA);
-      setIsAddressValidated(false);
+      const storedProfile = readStoredProfile();
+      setFormData({
+        ...DEFAULT_QUOTE_FORM_DATA,
+        ...storedProfile,
+      });
+      handleAddressValidatedChange(
+        Boolean(storedProfile.address) && readAddressValidationFlag()
+      );
     } catch (error) {
       console.error("Erreur soumission:", error);
       toast({
@@ -157,7 +298,7 @@ const QuoteForm = () => {
       onSubmit={handleSubmit}
       onChange={handleChange}
       onAddressSelect={handleAddressSelect}
-      onAddressValidatedChange={setIsAddressValidated}
+      onAddressValidatedChange={handleAddressValidatedChange}
       onMessageChange={handleMessageChange}
       onCheckboxChange={handleCheckboxChange}
     />

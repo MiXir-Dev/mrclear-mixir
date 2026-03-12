@@ -190,11 +190,7 @@ const QuoteLocationFields = ({
           <p className="mt-2 text-sm text-red-600">
             Sélectionnez une adresse proposée pour valider la soumission.
           </p>
-        ) : (
-          <p className="mt-2 text-sm text-gray-500">
-            Commencez à écrire puis choisissez une adresse dans la liste.
-          </p>
-        )}
+        ) : null}
         {fetchError ? (
           <p className="mt-1 text-sm text-red-600">{fetchError}</p>
         ) : null}
