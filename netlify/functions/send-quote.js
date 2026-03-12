@@ -253,12 +253,23 @@ function formatServices(services) {
  * @param {SubmissionPayload} payload
  * @returns {string}
  */
+function buildGoogleMapsUrl(payload) {
+  const query = [payload.address, payload.city].filter(Boolean).join(', ');
+  if (!query) {
+    return '';
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
+/**
+ * @param {SubmissionPayload} payload
+ * @returns {string}
+ */
 function buildTelegramMessage(payload) {
   const safeName = escapeHtml(payload.name || FALLBACK_LABEL.UNKNOWN);
   const safePhone = escapeHtml(payload.phone || FALLBACK_LABEL.UNKNOWN);
   const safeEmail = escapeHtml(payload.email || FALLBACK_LABEL.UNKNOWN);
   const safeAddress = escapeHtml(payload.address || FALLBACK_LABEL.NO_ADDRESS);
-  const safeCity = escapeHtml(payload.city || FALLBACK_LABEL.NO_ADDRESS);
   const safeFloors = escapeHtml(payload.floors);
   const safeMessage = escapeHtml(payload.message || FALLBACK_LABEL.NO_MESSAGE);
   const buildingLabel = payload.buildingType
@@ -266,6 +277,8 @@ function buildTelegramMessage(payload) {
     : FALLBACK_LABEL.UNKNOWN;
   const safeBuildingType = escapeHtml(buildingLabel || FALLBACK_LABEL.UNKNOWN);
   const servicesText = formatServices(payload.services);
+  const mapUrl = buildGoogleMapsUrl(payload);
+  const escapedMapUrl = escapeHtml(mapUrl);
 
   const lines = [
     '<b>Nouvelle soumission Mr. Clear</b>',
@@ -275,9 +288,9 @@ function buildTelegramMessage(payload) {
     `Téléphone: ${safePhone}`,
     `Courriel: ${safeEmail}`,
     '',
-    '<b>Adresse</b>',
-    `Adresse: ${safeAddress}`,
-    `Ville: ${safeCity}`,
+    '<b>Localisation</b>',
+    `📍 ${safeAddress}`,
+    ...(mapUrl ? [`<a href="${escapedMapUrl}">Ouvrir dans Google Maps</a>`] : []),
     `Type de bâtiment: ${safeBuildingType}`,
   ];
 

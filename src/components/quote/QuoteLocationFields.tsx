@@ -5,13 +5,25 @@ import { BUILDING_TYPES, QuoteFormData } from "@/consts/quote";
 interface AddressSuggestion {
   place_id: number;
   display_name: string;
+  lat?: string;
+  lon?: string;
   address?: {
+    house_number?: string;
+    road?: string;
+    pedestrian?: string;
+    footway?: string;
+    suburb?: string;
+    neighbourhood?: string;
+    quarter?: string;
+    city_district?: string;
     city?: string;
     town?: string;
     village?: string;
     municipality?: string;
     hamlet?: string;
     county?: string;
+    state?: string;
+    postcode?: string;
   };
 }
 
@@ -126,6 +138,40 @@ const QuoteLocationFields = ({
     );
   };
 
+  const buildFormattedAddress = (suggestion: AddressSuggestion) => {
+    const address = suggestion.address;
+    const streetName =
+      address?.road ?? address?.pedestrian ?? address?.footway ?? "";
+    const street = [address?.house_number, streetName]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    const district =
+      address?.suburb ??
+      address?.neighbourhood ??
+      address?.quarter ??
+      address?.city_district ??
+      "";
+    const city = resolveCity(suggestion);
+    const region = address?.state ?? "";
+    const postalCode = address?.postcode ?? "";
+
+    const compact = [street || district, city, region, postalCode]
+      .filter(Boolean)
+      .join(", ");
+
+    if (compact) {
+      return compact;
+    }
+
+    return suggestion.display_name
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .slice(0, 4)
+      .join(", ");
+  };
+
   const handleAddressInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -135,9 +181,11 @@ const QuoteLocationFields = ({
   };
 
   const handleSuggestionSelect = (suggestion: AddressSuggestion) => {
+    const formattedAddress = buildFormattedAddress(suggestion);
+
     suppressFetchRef.current = true;
     onAddressSelect({
-      address: suggestion.display_name.trim(),
+      address: formattedAddress,
       city: resolveCity(suggestion),
     });
     onAddressValidatedChange(true);
@@ -157,7 +205,7 @@ const QuoteLocationFields = ({
 
   return (
     <>
-      <div className="relative">
+      <div className="relative md:col-span-2">
         <label className="block text-gray-700 font-medium mb-2" htmlFor="address">
           Adresse *
         </label>
@@ -205,10 +253,15 @@ const QuoteLocationFields = ({
                   <li key={suggestion.place_id}>
                     <button
                       type="button"
-                      className="w-full px-4 py-3 text-left text-sm text-gray-700 hover:bg-gray-50"
+                      className="w-full px-4 py-3 text-left hover:bg-gray-50"
                       onMouseDown={() => handleSuggestionSelect(suggestion)}
                     >
-                      {suggestion.display_name}
+                      <span className="block text-sm font-medium text-gray-800">
+                        {buildFormattedAddress(suggestion)}
+                      </span>
+                      <span className="block text-xs text-gray-500">
+                        {resolveCity(suggestion) || "Adresse suggérée"}
+                      </span>
                     </button>
                   </li>
                 ))}
@@ -216,22 +269,6 @@ const QuoteLocationFields = ({
             )}
           </div>
         ) : null}
-      </div>
-
-      <div>
-        <label className="block text-gray-700 font-medium mb-2" htmlFor="city">
-          Ville *
-        </label>
-        <input
-          id="city"
-          name="city"
-          type="text"
-          required
-          value={formData.city}
-          onChange={onChange}
-          className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
-          placeholder="Terrebonne"
-        />
       </div>
 
       <div>
