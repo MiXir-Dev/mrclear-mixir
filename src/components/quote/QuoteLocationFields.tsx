@@ -205,6 +205,29 @@ const QuoteLocationFields = ({
 
   return (
     <>
+      <div>
+        <label
+          className="block text-gray-700 font-medium mb-2"
+          htmlFor="buildingType"
+        >
+          Type de bâtiment *
+        </label>
+        <select
+          id="buildingType"
+          name="buildingType"
+          required
+          value={formData.buildingType}
+          onChange={onChange}
+          className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
+        >
+          {BUILDING_TYPES.map((type) => (
+            <option key={type.value} value={type.value}>
+              {type.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="relative md:col-span-2">
         <label className="block text-gray-700 font-medium mb-2" htmlFor="address">
           Adresse *
@@ -269,29 +292,6 @@ const QuoteLocationFields = ({
             )}
           </div>
         ) : null}
-      </div>
-
-      <div>
-        <label
-          className="block text-gray-700 font-medium mb-2"
-          htmlFor="buildingType"
-        >
-          Type de bâtiment *
-        </label>
-        <select
-          id="buildingType"
-          name="buildingType"
-          required
-          value={formData.buildingType}
-          onChange={onChange}
-          className="w-full px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-blue"
-        >
-          {BUILDING_TYPES.map((type) => (
-            <option key={type.value} value={type.value}>
-              {type.label}
-            </option>
-          ))}
-        </select>
       </div>
     </>
   );
