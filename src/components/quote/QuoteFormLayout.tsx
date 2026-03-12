@@ -8,12 +8,15 @@ import { QuoteFormData } from "@/consts/quote";
 interface QuoteFormLayoutProps {
   formData: QuoteFormData;
   isSubmitting: boolean;
+  isAddressValidated: boolean;
   onSubmit: (event: React.FormEvent) => void;
   onChange: (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => void;
+  onAddressSelect: (value: { address: string; city: string }) => void;
+  onAddressValidatedChange: (isValid: boolean) => void;
   onMessageChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -21,8 +24,11 @@ interface QuoteFormLayoutProps {
 const QuoteFormLayout = ({
   formData,
   isSubmitting,
+  isAddressValidated,
   onSubmit,
   onChange,
+  onAddressSelect,
+  onAddressValidatedChange,
   onMessageChange,
   onCheckboxChange,
 }: QuoteFormLayoutProps) => {
@@ -44,7 +50,13 @@ const QuoteFormLayout = ({
             <form onSubmit={onSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <QuoteIdentityFields formData={formData} onChange={onChange} />
-                <QuoteLocationFields formData={formData} onChange={onChange} />
+                <QuoteLocationFields
+                  formData={formData}
+                  isAddressValidated={isAddressValidated}
+                  onChange={onChange}
+                  onAddressSelect={onAddressSelect}
+                  onAddressValidatedChange={onAddressValidatedChange}
+                />
                 <QuoteServiceFields
                   formData={formData}
                   onMessageChange={onMessageChange}
@@ -56,7 +68,7 @@ const QuoteFormLayout = ({
                 <Button
                   type="submit"
                   className="cta-button w-full md:w-auto px-8 py-4"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isAddressValidated}
                 >
                   {isSubmitting ? "Envoi en cours..." : "Obtenir mon devis gratuit"}
                 </Button>

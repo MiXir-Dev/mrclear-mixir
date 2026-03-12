@@ -5,12 +5,49 @@ import { DEFAULT_QUOTE_FORM_DATA, QuoteFormData } from "@/consts/quote";
 import { CONTACT } from "@/consts/contact";
 import { useToast } from "@/components/ui/use-toast";
 
+const SUBMISSION_COOLDOWN_KEY = "quote_form_last_success_at";
+const SUBMISSION_COOLDOWN_MS = 30 * 60 * 1000;
+
+const getSubmissionBlockedUntil = () => {
+  try {
+    const lastSubmittedAt = localStorage.getItem(SUBMISSION_COOLDOWN_KEY);
+    if (!lastSubmittedAt) {
+      return null;
+    }
+    const lastTimestamp = Number(lastSubmittedAt);
+    if (!Number.isFinite(lastTimestamp)) {
+      return null;
+    }
+    const blockedUntil = lastTimestamp + SUBMISSION_COOLDOWN_MS;
+    return blockedUntil > Date.now() ? blockedUntil : null;
+  } catch {
+    return null;
+  }
+};
+
+const setSubmissionSuccessTimestamp = () => {
+  try {
+    localStorage.setItem(SUBMISSION_COOLDOWN_KEY, String(Date.now()));
+  } catch {
+    // Ignore storage failure and continue UX flow.
+  }
+};
+
+const formatRetryHour = (timestamp: number) => {
+  return new Date(timestamp).toLocaleTimeString("fr-CA", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+};
+
 const QuoteForm = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState<QuoteFormData>(
     DEFAULT_QUOTE_FORM_DATA
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAddressValidated, setIsAddressValidated] = useState(false);
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -18,6 +55,9 @@ const QuoteForm = () => {
     >
   ) => {
     const { name, value } = event.target;
+    if (name === "address") {
+      setIsAddressValidated(false);
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -37,8 +77,44 @@ const QuoteForm = () => {
     }));
   };
 
+  const handleAddressSelect = ({
+    address,
+    city,
+  }: {
+    address: string;
+    city: string;
+  }) => {
+    setFormData((prev) => ({
+      ...prev,
+      address,
+      city: city || prev.city,
+    }));
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!isAddressValidated) {
+      toast({
+        title: "Adresse non validée",
+        description: "Choisissez une adresse proposée avant de soumettre.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const blockedUntil = getSubmissionBlockedUntil();
+    if (blockedUntil) {
+      toast({
+        title: "Nouvelle soumission temporairement bloquée",
+        description: `Vous pourrez renvoyer une demande à ${formatRetryHour(
+          blockedUntil
+        )}.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -58,12 +134,14 @@ const QuoteForm = () => {
         title: "Demande envoyée",
         description: "Votre devis a été transmis. Merci !",
       });
+      setSubmissionSuccessTimestamp();
       setFormData(DEFAULT_QUOTE_FORM_DATA);
+      setIsAddressValidated(false);
     } catch (error) {
       console.error("Erreur soumission:", error);
       toast({
         title: "Serveur indisponible",
-        description: `Nos serveurs ont un problème temporaire. Réessayez plus tard ou appelez-nous au ${CONTACT.phoneDisplay}.`,
+        description: `Nos serveurs ont un problème temporaire. Appelez-nous au ${CONTACT.phoneDisplay}.`,
         variant: "destructive",
       });
     } finally {
@@ -75,8 +153,11 @@ const QuoteForm = () => {
     <QuoteFormLayout
       formData={formData}
       isSubmitting={isSubmitting}
+      isAddressValidated={isAddressValidated}
       onSubmit={handleSubmit}
       onChange={handleChange}
+      onAddressSelect={handleAddressSelect}
+      onAddressValidatedChange={setIsAddressValidated}
       onMessageChange={handleMessageChange}
       onCheckboxChange={handleCheckboxChange}
     />
