@@ -1,19 +1,25 @@
-const Logo = () => {
+type LogoProps = {
+  isSticky: boolean;
+};
+
+const Logo = ({ isSticky }: LogoProps) => {
   return (
-    <div className="flex items-center space-x-3">
-      <a href="/" className="group flex items-center space-x-3">
+    <div className="flex items-center">
+      <a href="/" className="group flex items-center">
         <div
-          className="overflow-hidden transition-all duration-300 flex items-center justify-center rounded-full md:rounded-none h-12 w-12 md:h-auto md:w-auto"
+          className={`overflow-hidden transition-all duration-300 flex items-center justify-center
+          ${
+            isSticky
+              ? "h-14 w-14 md:h-14 md:w-14"
+              : "h-16 w-16 md:h-20 md:w-20"
+          }`}
         >
           <img
             src="/logo.png"
             alt="Logo Mr. Clear"
-            className="rounded-full object-contain h-10 w-10 md:h-12 md:w-12"
+            className="object-contain h-full w-full"
           />
         </div>
-        <span className="hidden md:inline-block font-semibold text-xl text-brand-blue tracking-wide group-hover:text-brand-blue/80 transition-colors duration-300">
-          Mr. Clear
-        </span>
       </a>
     </div>
   );
