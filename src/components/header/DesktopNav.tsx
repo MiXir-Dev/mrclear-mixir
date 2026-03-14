@@ -9,7 +9,7 @@ interface DesktopNavProps {
 const DesktopNav = ({ onNavigate, onQuote }: DesktopNavProps) => {
   return (
     <nav className="hidden md:flex items-center space-x-8">
-      {NAV_LINKS.map((link) => (
+      {NAV_LINKS.map((link) => ( 
         <a
           key={link.id}
           href={`/#${link.id}`}
