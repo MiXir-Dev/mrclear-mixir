@@ -10,8 +10,8 @@ const Logo = ({ isSticky }: LogoProps) => {
           className={`overflow-hidden transition-all duration-300 flex items-center justify-center
           ${
             isSticky
-              ? "h-14 w-14 md:h-14 md:w-14"
-              : "h-16 w-16 md:h-20 md:w-20"
+              ? "h-[4rem] w-[4rem] md:h-20 md:w-20"
+              : "h-[5rem] w-[5rem] md:h-20 md:w-20"
           }`}
         >
           <img
