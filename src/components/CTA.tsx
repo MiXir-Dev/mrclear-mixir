@@ -13,13 +13,18 @@ import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 interface CTAProps {
   heading?: string;
   subheading?: string;
+  cityName?: string;
 }
 
 const CTA = ({
   heading = DEFAULT_HOME_COPY.ctaHeading,
   subheading = DEFAULT_HOME_COPY.ctaSubheading,
+  cityName,
 }: CTAProps) => {
   const navigate = useNavigate();
+  const ctaButtonLabel = cityName
+    ? `Obtenir un devis gratuit à ${cityName}`
+    : "Obtenir un devis gratuit";
   
   // Images pour le carousel
   const carouselImages = [
@@ -67,7 +72,11 @@ const CTA = ({
                 <div className="aspect-square overflow-hidden rounded-lg shadow-xl">
                   <img
                     src={image}
-                    alt={`Image de lavage de vitres professionnel ${index + 1}`}
+                    alt={
+                      cityName
+                        ? `Image de lavage de vitres professionnel à ${cityName} ${index + 1}`
+                        : `Image de lavage de vitres professionnel ${index + 1}`
+                    }
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
@@ -86,9 +95,10 @@ const CTA = ({
     <div className="flex justify-center mt-12">
       <Button
         onClick={() => {navigate("/soumission")}}
+        aria-label={ctaButtonLabel}
         className="bg-white text-brand-blue hover:bg-gray-100 font-medium py-6 px-8 rounded-md text-lg shadow-lg transform transition-transform hover:scale-105"
       >
-        Obtenir un devis gratuit
+        {ctaButtonLabel}
       </Button>
     </div>
   </div>

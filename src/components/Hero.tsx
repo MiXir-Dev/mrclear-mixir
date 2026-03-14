@@ -6,12 +6,19 @@ import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 interface HeroProps {
   title?: string;
   subtitle?: string;
+  cityName?: string;
 }
 
-const Hero = ({ title, subtitle }: HeroProps) => {
+const Hero = ({ title, subtitle, cityName }: HeroProps) => {
   const navigate = useNavigate();
   const heroTitle = title ?? DEFAULT_HOME_COPY.heroTitle;
   const heroSubtitle = subtitle ?? DEFAULT_HOME_COPY.heroSubtitle;
+  const quoteButtonLabel = cityName
+    ? `Obtenir un devis gratuit à ${cityName}`
+    : "Obtenir un devis gratuit →";
+  const servicesButtonLabel = cityName
+    ? `Découvrir nos services à ${cityName}`
+    : "Découvrir nos services";
 
   return (
     <section className="relative min-h-[80vh] bg-brand-blue text-white md:min-h-[95vh]">
@@ -42,18 +49,20 @@ const Hero = ({ title, subtitle }: HeroProps) => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               onClick={() => navigate("/soumission")}
+              aria-label={quoteButtonLabel}
               className="bg-white text-brand-blue hover:bg-gray-100 font-semibold text-lg py-6 px-8"
               size="lg"
             >
-              Obtenir un devis gratuit →
+              {quoteButtonLabel}
             </Button>
             <Button 
               onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
+              aria-label={servicesButtonLabel}
               className="bg-transparent border-white text-white hover:bg-white/10 font-semibold text-lg py-6 px-8"
               size="lg"
             >
-              Découvrir nos services
+              {servicesButtonLabel}
             </Button>
           </div>
         </div>

@@ -6,6 +6,7 @@ import Features from "@/components/Features";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import NearbyAreasBlock from "@/components/home/NearbyAreasBlock";
 import HomeSeo from "@/components/home/HomeSeo";
 import { useSmoothScroll } from "@/components/home/useSmoothScroll";
 import Services from "@/components/Services";
@@ -28,20 +29,36 @@ const HomePage = ({ serviceArea }: HomePageProps) => {
         <Hero
           title={serviceArea?.heroTitle}
           subtitle={serviceArea?.heroSubtitle}
+          cityName={serviceArea?.displayName}
         />
-        <About introParagraph={serviceArea?.aboutParagraph} />
+        <About
+          introParagraph={serviceArea?.aboutParagraph}
+          cityName={serviceArea?.displayName}
+        />
         <Services introParagraph={serviceArea?.serviceIntro} />
         <Features />
         <Testimonials />
         <CTA
           heading={serviceArea?.ctaHeading}
           subheading={serviceArea?.ctaSubheading}
+          cityName={serviceArea?.displayName}
         />
         <FAQ
           introParagraph={serviceArea?.faqIntro}
           items={serviceArea?.faqItems}
         />
-        <Contact supportingCopy={serviceArea?.contactSupportingCopy} />
+        {serviceArea ? (
+          <NearbyAreasBlock
+            title={serviceArea.nearbyAreasTitle}
+            intro={serviceArea.nearbyAreasIntro}
+            areas={serviceArea.nearbyAreas}
+            currentSlug={serviceArea.slug}
+          />
+        ) : null}
+        <Contact
+          supportingCopy={serviceArea?.contactSupportingCopy}
+          cityName={serviceArea?.displayName}
+        />
       </main>
       <Footer />
       <StickyCTA />

@@ -5,10 +5,23 @@ import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 
 interface AboutProps {
   introParagraph?: string;
+  cityName?: string;
 }
 
-const About = ({ introParagraph = DEFAULT_HOME_COPY.aboutParagraph }: AboutProps) => {
+const About = ({
+  introParagraph = DEFAULT_HOME_COPY.aboutParagraph,
+  cityName,
+}: AboutProps) => {
   const navigate = useNavigate();
+  const imageAlt = cityName
+    ? `Équipe professionnelle de nettoyage de vitres à ${cityName}`
+    : "Équipe professionnelle de nettoyage de vitres";
+  const quoteButtonLabel = cityName
+    ? `Obtenir une soumission à ${cityName}`
+    : "Obtenir une soumission";
+  const contactButtonLabel = cityName
+    ? `Nous contacter à ${cityName}`
+    : "Nous contacter";
 
   return (
     <section id="pourquoi-nous" className="py-20 bg-white">
@@ -18,7 +31,7 @@ const About = ({ introParagraph = DEFAULT_HOME_COPY.aboutParagraph }: AboutProps
             <div className="relative">
               <img 
                 src="/about.png" 
-                alt="Équipe professionnelle de nettoyage de vitres" 
+                alt={imageAlt}
                 className="rounded-lg shadow-lg w-full object-cover"
                 loading="lazy"
               />
@@ -77,18 +90,20 @@ const About = ({ introParagraph = DEFAULT_HOME_COPY.aboutParagraph }: AboutProps
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
                 onClick={() => {navigate("/soumission")}}
+                aria-label={quoteButtonLabel}
                 className="cta-button"
                 size="lg"
               >
-                Obtenir une soumission
+                {quoteButtonLabel}
               </Button>
               <Button 
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 variant="outline" 
+                aria-label={contactButtonLabel}
                 className="border-brand-blue text-brand-blue hover:bg-brand-light"
                 size="lg"
               >
-                Nous Contacter
+                {contactButtonLabel}
               </Button>
             </div>
           </div>

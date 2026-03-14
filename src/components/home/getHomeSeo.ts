@@ -58,6 +58,7 @@ export const getHomeSeo = (
     ? Array.from(
         new Set([
           serviceArea.displayName,
+          ...(serviceArea.nearbyAreas ?? []),
           ...(serviceArea.nearbyRegions ?? []),
           "Rive-Nord",
         ])

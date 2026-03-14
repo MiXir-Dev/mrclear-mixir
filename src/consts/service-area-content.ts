@@ -20,6 +20,9 @@ export interface HomePageCopy {
   ctaSubheading: string;
   contactSupportingCopy: string;
   faqItems: HomeFaqItem[];
+  nearbyAreasTitle?: string;
+  nearbyAreasIntro?: string;
+  nearbyAreas?: string[];
 }
 
 interface ServiceAreaCopyConfig {
@@ -348,6 +351,91 @@ const buildLocalizedFaqItems = (
   ];
 };
 
+const formatNearbyAreaList = (areas: string[]) => {
+  if (areas.length === 0) {
+    return "";
+  }
+
+  if (areas.length === 1) {
+    return areas[0];
+  }
+
+  return `${areas.slice(0, -1).join(", ")} et ${areas[areas.length - 1]}`;
+};
+
+export const EXACT_NEARBY_AREAS: Record<ServiceAreaSlug, string[]> = {
+  montreal: [
+    "Anjou",
+    "Saint-Léonard",
+    "Ahuntsic-Cartierville",
+    "Rosemont–La Petite-Patrie",
+    "Villeray–Saint-Michel–Parc-Extension",
+  ],
+  laval: [
+    "Chomedey",
+    "Sainte-Dorothée",
+    "Duvernay",
+    "Vimont",
+    "Laval-des-Rapides",
+  ],
+  terrebonne: [
+    "Lachenaie",
+    "La Plaine",
+    "Terrebonne-Ouest",
+    "Mascouche",
+    "Repentigny",
+  ],
+  repentigny: [
+    "Le Gardeur",
+    "Centre-ville",
+    "Du Boisé",
+    "Le Bourg-Neuf",
+    "Vieux-Saint-Paul",
+  ],
+  mascouche: [
+    "Vieux-Mascouche",
+    "La Plaine",
+    "Terrebonne",
+    "Repentigny",
+    "L'Assomption",
+  ],
+  assomption: [
+    "Centre-ville de L'Assomption",
+    "Le Gardeur",
+    "Charlemagne",
+    "Repentigny",
+    "Mascouche",
+  ],
+  boisbriand: [
+    "Sainte-Thérèse",
+    "Rosemère",
+    "Lorraine",
+    "Bois-des-Filion",
+    "Laval",
+  ],
+  lorraine: [
+    "Rosemère",
+    "Boisbriand",
+    "Bois-des-Filion",
+    "Sainte-Thérèse",
+    "Laval",
+  ],
+  rosemere: [
+    "Secteur 1",
+    "Secteur 2",
+    "Secteur 3",
+    "Secteur 4",
+    "Secteur 5",
+  ],
+  "bois-des-filion": [
+    "Lorraine",
+    "Rosemère",
+    "Terrebonne",
+    "Sainte-Thérèse",
+    "Laval",
+  ],
+};
+
 export const SERVICE_AREA_PAGE_CONTENT: Record<
   ServiceAreaSlug,
   ServiceAreaPageContent
@@ -373,6 +461,11 @@ export const SERVICE_AREA_PAGE_CONTENT: Record<
       copy.faqQuestionVariants
     ),
     nearbyRegions: copy.nearbyRegions,
+    nearbyAreasTitle: `Secteurs desservis à proximité de ${area.name}`,
+    nearbyAreasIntro: `À ${area.name}, nous desservons aussi ${formatNearbyAreaList(
+      EXACT_NEARBY_AREAS[area.slug]
+    )}.`,
+    nearbyAreas: EXACT_NEARBY_AREAS[area.slug],
   };
 
   return acc;
