@@ -17,7 +17,7 @@ const DesktopNav = ({ onNavigate, onQuote }: DesktopNavProps) => {
             event.preventDefault();
             onNavigate(link.id);
           }}
-          className="text-gray-700 hover:text-brand-blue font-medium"
+          className="text-white hover:text-brand-blue font-medium"
         >
           {link.label}
         </a>
