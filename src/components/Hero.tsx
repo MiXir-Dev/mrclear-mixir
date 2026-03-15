@@ -14,7 +14,7 @@ const Hero = ({ title, subtitle, cityName }: HeroProps) => {
   const heroTitle = title ?? DEFAULT_HOME_COPY.heroTitle;
   const heroSubtitle = subtitle ?? DEFAULT_HOME_COPY.heroSubtitle;
   const quoteButtonLabel = cityName
-    ? `Obtenir un devis gratuit à ${cityName}`
+    ? `Devis gratuit à ${cityName}`
     : "Obtenir un devis gratuit →";
   const servicesButtonLabel = cityName
     ? `Découvrir nos services à ${cityName}`
@@ -32,7 +32,12 @@ const Hero = ({ title, subtitle, cityName }: HeroProps) => {
       ></div>
       <div className="container relative mx-auto flex min-h-[80vh] items-center px-4 py-20 md:min-h-[95vh] md:py-32">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+          <h1 className="
+            text-4xl md:text-5xl
+            font-bold mb-6 leading-tight
+            break-words hyphens-auto text-balance
+            max-w-[20ch] sm:max-w-none
+          ">
             {heroTitle}
           </h1>
           <p className="text-xl md:text-2xl mb-8 font-light">
