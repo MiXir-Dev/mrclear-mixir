@@ -2,7 +2,7 @@ import { CONTACT, SOCIAL_LINKS } from "@/consts/contact";
 import { SERVICE_AREAS } from "@/consts/service-areas";
 import { SERVICE_TYPES } from "@/consts/services";
 
-export const SITE_URL = "https://mr-clear.com";
+export const SITE_URL = "https://mrclear.ca";
 
 export const HOME_SEO_DEFAULT = {
   title:

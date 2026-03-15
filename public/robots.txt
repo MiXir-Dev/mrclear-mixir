@@ -3,7 +3,7 @@ Allow: /
 Allow: /secteurs/
 
 # Sitemap
-Sitemap: https://mr-clear.com/sitemap.xml
+Sitemap: https://mrclear.ca/sitemap.xml
 
 # Google & Bing specific
 User-agent: Googlebot

@@ -9,8 +9,8 @@ const FooterBottom = ({ currentYear }: FooterBottomProps) => {
     <div className="border-t border-white/20 mt-12 pt-8 text-center md:flex md:justify-between md:text-left">
       <p className="opacity-75 text-sm">
         &copy; {currentYear} Mr. Clear. Tous droits réservés.{" "}
-        <a href="https://www.mr-clear.com" className="hover:underline">
-          mr-clear.com
+        <a href="https://www.mrclear.ca" className="hover:underline">
+          mrclear.ca
         </a>
       </p>
       <div className="mt-4 md:mt-0">
