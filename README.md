@@ -1,4 +1,6 @@
-# Mr. Clear — Lavage de vitres professionnel
+# Mr. Clear Lavage de vitres professionnel
+
+https://mrclear.ca/
 
 Ce projet représente le site officiel de **Mr. Clear**, une entreprise de services de lavage de vitres résidentiels et commerciaux, opérant principalement sur la Rive-Nord de Montréal, incluant les villes de Terrebonne, Mascouche, Repentigny, Boisbriand, Lorraine, Rosemère, Bois-des-Filion, ainsi que Laval et Montréal.
 
@@ -22,7 +24,7 @@ Nous accompagnons les entrepreneurs locaux en :
 - Optimisant la visibilité grâce au SEO local
 - Offrant des forfaits clés en main (nom de domaine, déploiement, maintenance, SEO, design)
 
-🎯 Depuis plus d’un an, nous aidons les commerces, travailleurs autonomes et PME à développer leur présence en ligne.  
+🎯 Depuis plusieurs années, nous aidons les commerces, travailleurs autonomes et PME à développer leur présence en ligne.  
 📦 Nous proposons également des **plans abordables pour les particuliers** qui souhaitent un site personnel ou vitrine.
 
 ---
@@ -38,8 +40,4 @@ Nous accompagnons les entrepreneurs locaux en :
 
 ---
 
-### 🚀 Déploiement
-
-```bash
-npm install
-npm run dev
+https://mrclear.ca/
