@@ -2,7 +2,6 @@ import { ServiceAreaPageContent } from "@/consts/service-area-content";
 import {
   BASE_LOCAL_BUSINESS_STRUCTURED_DATA,
   HOME_SEO_DEFAULT,
-  SITE_URL,
 } from "@/consts/seo";
 import {
   localizeMetaDescription,
@@ -17,6 +16,7 @@ export interface HomeSeoPayload {
   ogDescription: string;
   ogUrl: string;
   canonicalUrl: string;
+  robots: string;
   geoRegion: string;
   geoPlacename: string;
   structuredData: Record<string, unknown>;
@@ -40,9 +40,10 @@ const withCityKeywords = (city: string) => {
 export const getHomeSeo = (
   serviceArea?: ServiceAreaPageContent
 ): HomeSeoPayload => {
-  const canonicalUrl = serviceArea
-    ? `${SITE_URL}${serviceArea.path}`
-    : HOME_SEO_DEFAULT.canonicalUrl;
+  // Temporary SEO consolidation: service-area variants reuse the homepage and
+  // should point canonical signals to the main URL.
+  const canonicalUrl = HOME_SEO_DEFAULT.canonicalUrl;
+  const robots = serviceArea ? "noindex,follow" : "index,follow";
 
   const description = localizeMetaDescription(
     HOME_SEO_DEFAULT.description,
@@ -75,6 +76,7 @@ export const getHomeSeo = (
     ogDescription: serviceArea ? description : HOME_SEO_DEFAULT.ogDescription,
     ogUrl: canonicalUrl,
     canonicalUrl,
+    robots,
     geoRegion: HOME_SEO_DEFAULT.geoRegion,
     geoPlacename: serviceArea
       ? `${serviceArea.displayName}, Québec, Canada`

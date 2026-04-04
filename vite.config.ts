@@ -20,19 +20,8 @@ export default defineConfig({
     sitemapPlugin({
       hostname: "https://mrclear.ca",
       dynamicRoutes: [
-        "/",
         "/soumission",
         "/confidentialite",
-        "/secteurs/laval",
-        "/secteurs/montreal",
-        "/secteurs/terrebonne",
-        "/secteurs/repentigny",
-        "/secteurs/mascouche",
-        "/secteurs/assomption",
-        "/secteurs/boisbriand",
-        "/secteurs/lorraine",
-        "/secteurs/rosemere",
-        "/secteurs/bois-des-filion"
       ],
       changefreq: "monthly",
       priority: 0.7,

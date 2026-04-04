@@ -18,6 +18,7 @@ const HomeSeo = ({ serviceArea }: HomeSeoProps) => {
       <meta property="og:description" content={seo.ogDescription} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={seo.ogUrl} />
+      <meta name="robots" content={seo.robots} />
       <meta name="geo.region" content={seo.geoRegion} />
       <meta name="geo.placename" content={seo.geoPlacename} />
       <link rel="canonical" href={seo.canonicalUrl} />
