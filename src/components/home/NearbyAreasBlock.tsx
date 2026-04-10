@@ -46,22 +46,25 @@ const NearbyAreasBlock = ({
           </h2>
           {intro ? <p className="text-gray-600 mb-5">{intro}</p> : null}
 
-          <ul className="flex flex-wrap justify-between gap-3" aria-label={title}>
+          <ul
+            className="flex flex-wrap justify-center gap-3"
+            aria-label={title}
+          >
             {areas.map((area) => {
               const path = AREA_PATH_BY_NAME[normalizeAreaName(area)];
               const isSelfArea = path === `/lavage-de-vitres-${currentSlug}`;
 
               return (
-                <li key={area}>
+                <li key={area} className="flex">
                   {path && !isSelfArea ? (
                     <Link
                       to={path}
-                      className="inline-flex items-center rounded-full bg-brand-light px-4 py-2 text-sm font-medium text-brand-blue hover:bg-brand-blue hover:text-white transition-colors"
+                      className="inline-flex items-center justify-center rounded-full bg-brand-light px-4 py-2 text-sm font-medium text-brand-blue text-center hover:bg-brand-blue hover:text-white transition-colors"
                     >
                       {area}
                     </Link>
                   ) : (
-                    <span className="inline-flex items-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700">
+                    <span className="inline-flex items-center justify-center rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 text-center">
                       {area}
                     </span>
                   )}

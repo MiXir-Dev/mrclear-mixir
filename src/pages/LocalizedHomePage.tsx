@@ -4,9 +4,17 @@ import { getServiceAreaBySlug } from "@/consts/service-areas";
 import { getServiceAreaPageContent } from "@/consts/service-area-content";
 import { useParams } from "react-router-dom";
 
+const LOCALIZED_PREFIX = "lavage-de-vitres-";
+
 const LocalizedHomePage = () => {
-  const { slug } = useParams<{ slug: string }>();
-  const normalizedSlug = slug?.toLowerCase() ?? "";
+  const { localizedSlug } = useParams<{ localizedSlug: string }>();
+  const normalizedPathSlug = localizedSlug?.toLowerCase() ?? "";
+
+  if (!normalizedPathSlug.startsWith(LOCALIZED_PREFIX)) {
+    return <NotFound />;
+  }
+
+  const normalizedSlug = normalizedPathSlug.slice(LOCALIZED_PREFIX.length);
   const serviceArea = getServiceAreaBySlug(normalizedSlug);
 
   if (!serviceArea) {
