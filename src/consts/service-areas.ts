@@ -13,23 +13,23 @@ export type ServiceAreaSlug =
 export interface ServiceArea {
   slug: ServiceAreaSlug;
   name: string;
-  path: `/secteurs/${ServiceAreaSlug}`;
+  path: `/lavage-de-vitres-${ServiceAreaSlug}`;
 }
 
 export const SERVICE_AREAS: ServiceArea[] = [
-  { slug: "laval", name: "Laval", path: "/secteurs/laval" },
-  { slug: "montreal", name: "Montréal", path: "/secteurs/montreal" },
-  { slug: "repentigny", name: "Repentigny", path: "/secteurs/repentigny" },
-  { slug: "terrebonne", name: "Terrebonne", path: "/secteurs/terrebonne" },
-  { slug: "mascouche", name: "Mascouche", path: "/secteurs/mascouche" },
-  { slug: "assomption", name: "L'Assomption", path: "/secteurs/assomption" },
-  { slug: "boisbriand", name: "Boisbriand", path: "/secteurs/boisbriand" },
-  { slug: "lorraine", name: "Lorraine", path: "/secteurs/lorraine" },
-  { slug: "rosemere", name: "Rosemère", path: "/secteurs/rosemere" },
+  { slug: "laval", name: "Laval", path: "/lavage-de-vitres-laval" },
+  { slug: "montreal", name: "Montréal", path: "/lavage-de-vitres-montreal" },
+  { slug: "repentigny", name: "Repentigny", path: "/lavage-de-vitres-repentigny" },
+  { slug: "terrebonne", name: "Terrebonne", path: "/lavage-de-vitres-terrebonne" },
+  { slug: "mascouche", name: "Mascouche", path: "/lavage-de-vitres-mascouche" },
+  { slug: "assomption", name: "L'Assomption", path: "/lavage-de-vitres-assomption" },
+  { slug: "boisbriand", name: "Boisbriand", path: "/lavage-de-vitres-boisbriand" },
+  { slug: "lorraine", name: "Lorraine", path: "/lavage-de-vitres-lorraine" },
+  { slug: "rosemere", name: "Rosemère", path: "/lavage-de-vitres-rosemere" },
   {
     slug: "bois-des-filion",
     name: "Bois-des-Filion",
-    path: "/secteurs/bois-des-filion",
+    path: "/lavage-de-vitres-bois-des-filion",
   },
 ];
 

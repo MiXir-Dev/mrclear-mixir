@@ -1,5 +1,6 @@
 https://mr-clear.com/* https://mrclear.ca/:splat 301!
 https://www.mr-clear.com/* https://mrclear.ca/:splat 301!
 https://www.mrclear.ca/* https://mrclear.ca/:splat 301!
+/secteurs/:slug /lavage-de-vitres-:slug 301!
 
 /* /index.html 200

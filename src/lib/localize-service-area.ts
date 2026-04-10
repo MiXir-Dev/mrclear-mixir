@@ -7,7 +7,7 @@ const PREPOSITIONS = {
   de: "de",
 } as const;
 
-const HOME_VARIANT_PREFIX = "/secteurs/";
+const HOME_VARIANT_PREFIX = "/lavage-de-vitres-";
 
 export const withCity = (
   text: string,

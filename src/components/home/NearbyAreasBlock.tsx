@@ -49,7 +49,7 @@ const NearbyAreasBlock = ({
           <ul className="flex flex-wrap justify-between gap-3" aria-label={title}>
             {areas.map((area) => {
               const path = AREA_PATH_BY_NAME[normalizeAreaName(area)];
-              const isSelfArea = path === `/secteurs/${currentSlug}`;
+              const isSelfArea = path === `/lavage-de-vitres-${currentSlug}`;
 
               return (
                 <li key={area}>

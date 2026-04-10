@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Allow: /secteurs/
+Allow: /lavage-de-vitres-
 
 # Sitemap
 Sitemap: https://mrclear.ca/sitemap.xml
@@ -8,11 +8,11 @@ Sitemap: https://mrclear.ca/sitemap.xml
 # Google & Bing specific
 User-agent: Googlebot
 Allow: /
-Allow: /secteurs/
+Allow: /lavage-de-vitres-
 
 User-agent: Bingbot
 Allow: /
-Allow: /secteurs/
+Allow: /lavage-de-vitres-
 
 # Social media crawlers
 User-agent: Twitterbot
