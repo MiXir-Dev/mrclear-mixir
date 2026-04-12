@@ -3,6 +3,14 @@ import { SERVICE_AREAS } from "@/consts/service-areas";
 import { SERVICE_TYPES } from "@/consts/services";
 
 export const SITE_URL = "https://mrclear.ca";
+export const SITE_NAME = "Mr.Clear";
+export const SITE_LOCALE = "fr_CA";
+export const DEFAULT_SOCIAL_IMAGE_URL = `${SITE_URL}/hero.jpeg`;
+export const DEFAULT_SOCIAL_IMAGE_TYPE = "image/jpeg";
+export const DEFAULT_SOCIAL_IMAGE_WIDTH = "1536";
+export const DEFAULT_SOCIAL_IMAGE_HEIGHT = "1024";
+export const DEFAULT_SOCIAL_IMAGE_ALT =
+  "Service de lavage de vitres professionnel Mr.Clear";
 
 export const HOME_SEO_DEFAULT = {
   title:
