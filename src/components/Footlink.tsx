@@ -16,17 +16,12 @@ const FooterLink = ({ id, children, className = "" }: FooterLinkProps) => {
 
     const scrollToTarget = () => {
       const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
     };
 
-    if (!isHomeVariantPath(location.pathname)) {
-      navigate(`/#${id}`);
-      setTimeout(scrollToTarget, 100); 
-    } else {
-      scrollToTarget();
-    }
+    if (isHomeVariantPath(location.pathname)) return scrollToTarget();
+    navigate(`/#${id}`);
+    setTimeout(scrollToTarget, 100); 
   };
 
   return (

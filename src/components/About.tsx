@@ -1,7 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
+import {
+  QUOTE_PATH,
+  openPathInNewTab,
+  shouldOpenQuoteInNewTab,
+} from "@/lib/navigation-behavior";
 
 interface AboutProps {
   introParagraph?: string;
@@ -13,6 +18,7 @@ const About = ({
   cityName,
 }: AboutProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const imageAlt = cityName
     ? `Équipe professionnelle de nettoyage de vitres à ${cityName}`
     : "Équipe professionnelle de nettoyage de vitres";
@@ -22,6 +28,15 @@ const About = ({
   const contactButtonLabel = cityName
     ? `Nous contacter à ${cityName}`
     : "Nous contacter";
+
+  const handleQuoteClick = () => {
+    if (shouldOpenQuoteInNewTab(location.pathname)) return openPathInNewTab(QUOTE_PATH);
+    navigate(QUOTE_PATH);
+  };
+
+  const handleContactClick = () => {
+    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section id="pourquoi-nous" className="py-20 bg-white">
@@ -89,7 +104,7 @@ const About = ({
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Button 
-                onClick={() => {navigate("/soumission")}}
+                onClick={handleQuoteClick}
                 aria-label={quoteButtonLabel}
                 className="cta-button"
                 size="lg"
@@ -97,7 +112,7 @@ const About = ({
                 {quoteButtonLabel}
               </Button>
               <Button 
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={handleContactClick}
                 variant="outline" 
                 aria-label={contactButtonLabel}
                 className="border-brand-blue text-brand-blue hover:bg-brand-light"

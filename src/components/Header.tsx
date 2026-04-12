@@ -4,6 +4,11 @@ import DesktopNav from "@/components/header/DesktopNav";
 import Logo from "@/components/header/Logo";
 import MobileMenu from "@/components/header/MobileMenu";
 import { isHomeVariantPath } from "@/lib/localize-service-area";
+import {
+  QUOTE_PATH,
+  openPathInNewTab,
+  shouldOpenQuoteInNewTab,
+} from "@/lib/navigation-behavior";
 
 const Header = () => {
   const [isSticky, setIsSticky] = useState(false);
@@ -46,7 +51,8 @@ const Header = () => {
   };
 
   const handleQuote = () => {
-    navigate("/soumission");
+    if (shouldOpenQuoteInNewTab(location.pathname)) return openPathInNewTab(QUOTE_PATH);
+    navigate(QUOTE_PATH);
   };
 
   return (

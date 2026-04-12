@@ -1,9 +1,14 @@
 import { SERVICE_AREAS } from "@/consts/service-areas";
 import { splitServiceAreas } from "@/consts/footer";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import {
+  getNewTabLinkProps,
+  shouldOpenRouteInNewTab,
+} from "@/lib/navigation-behavior";
 
 const FooterServiceAreas = () => {
   const [leftColumn, rightColumn] = splitServiceAreas(SERVICE_AREAS);
+  const location = useLocation();
 
   return (
     <div>
@@ -14,14 +19,28 @@ const FooterServiceAreas = () => {
         <ul className="space-y-2">
           {leftColumn.map((area) => (
             <li key={area.name}>
-              <Link to={area.path}>{area.name}</Link>
+              <Link
+                to={area.path}
+                {...getNewTabLinkProps(
+                  shouldOpenRouteInNewTab(location.pathname, area.path)
+                )}
+              >
+                {area.name}
+              </Link>
             </li>
           ))}
         </ul>
         <ul className="space-y-2">
           {rightColumn.map((area) => (
             <li key={area.name}>
-              <Link to={area.path}>{area.name}</Link>
+              <Link
+                to={area.path}
+                {...getNewTabLinkProps(
+                  shouldOpenRouteInNewTab(location.pathname, area.path)
+                )}
+              >
+                {area.name}
+              </Link>
             </li>
           ))}
         </ul>

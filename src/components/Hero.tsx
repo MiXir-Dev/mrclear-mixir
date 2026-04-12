@@ -1,7 +1,12 @@
 
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
+import {
+  QUOTE_PATH,
+  openPathInNewTab,
+  shouldOpenQuoteInNewTab,
+} from "@/lib/navigation-behavior";
 
 interface HeroProps {
   title?: string;
@@ -11,6 +16,7 @@ interface HeroProps {
 
 const Hero = ({ title, subtitle, cityName }: HeroProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const heroTitle = title ?? DEFAULT_HOME_COPY.heroTitle;
   const heroSubtitle = subtitle ?? DEFAULT_HOME_COPY.heroSubtitle;
   const quoteButtonLabel = cityName
@@ -53,7 +59,10 @@ const Hero = ({ title, subtitle, cityName }: HeroProps) => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
-              onClick={() => navigate("/soumission")}
+              onClick={() => {
+                if (shouldOpenQuoteInNewTab(location.pathname)) return openPathInNewTab(QUOTE_PATH);
+                navigate(QUOTE_PATH);
+              }}
               aria-label={quoteButtonLabel}
               className="bg-white text-brand-blue hover:bg-gray-100 font-semibold text-lg py-6 px-8"
               size="lg"
