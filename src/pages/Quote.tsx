@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import QuoteForm from "@/components/QuoteForm";
 import StickyCTA from "@/components/StickyCTA";
+import { QUOTE_PATH } from "@/consts/paths";
 
 const QuotePage = () => {
   return (
@@ -14,7 +15,7 @@ const QuotePage = () => {
           name="description"
           content="Remplissez notre formulaire de soumission pour obtenir un devis personnalisé en 24h. Service rapide et professionnel pour vitres et gouttières."
         />
-        <link rel="canonical" href="https://mrclear.ca/soumission" />
+        <link rel="canonical" href={`https://mrclear.ca${QUOTE_PATH}`} />
         <meta property="og:title" content="Soumission - Mr. Clear" />
         <meta
           property="og:description"

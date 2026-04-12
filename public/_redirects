@@ -32,6 +32,7 @@ https://www.mr-clear.com/* https://mrclear.ca/:splat 301!
 https://www.mrclear.ca/* https://mrclear.ca/:splat 301!
 
 # Legacy path migrations.
+/soumission /soumission-lavage-de-vitres 301!
 /secteurs/:slug /lavage-de-vitres-:slug 301!
 /secteurs/:slug/ /lavage-de-vitres-:slug 301!
 /lavage-de-vitres-:slug/ /lavage-de-vitres-:slug 301!

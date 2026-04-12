@@ -1,3 +1,5 @@
+import { HOME_PATH, SERVICE_AREA_PATH_PREFIX } from "@/consts/paths";
+
 interface WithCityOptions {
   preposition?: "a" | "de";
 }
@@ -6,8 +8,6 @@ const PREPOSITIONS = {
   a: "à",
   de: "de",
 } as const;
-
-const HOME_VARIANT_PREFIX = "/lavage-de-vitres-";
 
 export const withCity = (
   text: string,
@@ -37,4 +37,4 @@ export const localizeMetaDescription = (
 ) => area?.metaDescription ?? fallback;
 
 export const isHomeVariantPath = (pathname: string) =>
-  pathname === "/" || pathname.startsWith(HOME_VARIANT_PREFIX);
+  pathname === HOME_PATH || pathname.startsWith(SERVICE_AREA_PATH_PREFIX);

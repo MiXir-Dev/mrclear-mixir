@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import DesktopNav from "@/components/header/DesktopNav";
 import Logo from "@/components/header/Logo";
 import MobileMenu from "@/components/header/MobileMenu";
+import { QUOTE_PATH, buildHomeSectionPath } from "@/consts/paths";
 import { isHomeVariantPath } from "@/lib/localize-service-area";
 import {
-  QUOTE_PATH,
   openPathInNewTab,
   shouldOpenQuoteInNewTab,
 } from "@/lib/navigation-behavior";
@@ -43,7 +43,7 @@ const Header = () => {
     };
 
     if (!isHomeVariantPath(location.pathname)) {
-      navigate(`/#${id}`);
+      navigate(buildHomeSectionPath(id));
       setTimeout(scrollToId, 100);
     } else {
       scrollToId();

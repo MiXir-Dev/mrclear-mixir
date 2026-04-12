@@ -1,3 +1,5 @@
+import { HOME_PATH } from "@/consts/paths";
+
 type LogoProps = {
   isSticky: boolean;
 };
@@ -5,7 +7,7 @@ type LogoProps = {
 const Logo = ({ isSticky }: LogoProps) => {
   return (
     <div className="flex items-center">
-      <a href="/" className="group flex items-center">
+      <a href={HOME_PATH} className="group flex items-center">
         <div
           className={`overflow-hidden transition-all duration-300 flex items-center justify-center
           ${

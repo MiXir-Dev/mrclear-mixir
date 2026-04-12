@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { CONTACT } from "@/consts/contact";
 import { NAV_LINKS } from "@/consts/navigation";
+import { buildHomeSectionPath } from "@/consts/paths";
 import { Mail, Menu, Phone } from "lucide-react";
 
 interface MobileMenuProps {
@@ -75,7 +76,7 @@ const MobileMenu = ({
             {NAV_LINKS.map((link) => (
               <SheetClose key={link.id} asChild>
                 <a
-                  href={`#${link.id}`}
+                  href={buildHomeSectionPath(link.id)}
                   onClick={(event) => {
                     event.preventDefault();
                     onNavigate(link.id);

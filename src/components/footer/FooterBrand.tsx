@@ -1,12 +1,13 @@
 import { Facebook, Instagram, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CONTACT, SOCIAL_LINKS } from "@/consts/contact";
+import { HOME_PATH } from "@/consts/paths";
 
 const FooterBrand = () => {
   return (
     <div className="md:col-span-1 flex flex-col items-center md:items-start">
       <div className="mb-6 text-center md:text-left">
-        <Link to="/" className="inline-block">
+        <Link to={HOME_PATH} className="inline-block">
           <h3 className="text-2xl font-bold mb-2">Mr. Clear</h3>
           <div className="w-16 h-1 bg-white rounded mx-auto md:mx-0"></div>
         </Link>

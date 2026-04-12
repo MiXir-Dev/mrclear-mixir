@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS } from "@/consts/navigation";
+import { buildHomeSectionPath } from "@/consts/paths";
 
 interface DesktopNavProps {
   onNavigate: (id: string) => void;
@@ -12,7 +13,7 @@ const DesktopNav = ({ onNavigate, onQuote }: DesktopNavProps) => {
       {NAV_LINKS.map((link) => ( 
         <a
           key={link.id}
-          href={`/#${link.id}`}
+          href={buildHomeSectionPath(link.id)}
           onClick={(event) => {
             event.preventDefault();
             onNavigate(link.id);

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SERVICE_AREAS, ServiceAreaSlug } from "@/consts/service-areas";
+import { buildServiceAreaPath } from "@/consts/paths";
 
 interface NearbyAreasBlockProps {
   title?: string;
@@ -52,7 +53,9 @@ const NearbyAreasBlock = ({
           >
             {areas.map((area) => {
               const path = AREA_PATH_BY_NAME[normalizeAreaName(area)];
-              const isSelfArea = path === `/lavage-de-vitres-${currentSlug}`;
+              const isSelfArea = Boolean(
+                currentSlug && path === buildServiceAreaPath(currentSlug)
+              );
 
               return (
                 <li key={area} className="flex">

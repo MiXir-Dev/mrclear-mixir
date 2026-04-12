@@ -1,6 +1,6 @@
-const SERVICE_AREA_PATH_PREFIX = "/lavage-de-vitres-";
-export const QUOTE_PATH = "/soumission-lavage-de-vitres";
-const isRootHomePath = (pathname: string) => pathname === "/";
+import { HOME_PATH, SERVICE_AREA_PATH_PREFIX } from "@/consts/paths";
+
+const isRootHomePath = (pathname: string) => pathname === HOME_PATH;
 
 export const isServiceAreaPath = (path: string) =>
   path.startsWith(SERVICE_AREA_PATH_PREFIX);

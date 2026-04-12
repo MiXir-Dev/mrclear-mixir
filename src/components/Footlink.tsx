@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { buildHomeSectionPath } from "@/consts/paths";
 import { isHomeVariantPath } from "@/lib/localize-service-area";
 
 interface FooterLinkProps {
@@ -20,12 +21,12 @@ const FooterLink = ({ id, children, className = "" }: FooterLinkProps) => {
     };
 
     if (isHomeVariantPath(location.pathname)) return scrollToTarget();
-    navigate(`/#${id}`);
+    navigate(buildHomeSectionPath(id));
     setTimeout(scrollToTarget, 100); 
   };
 
   return (
-    <a href={`/#${id}`} onClick={handleClick} className={className}>
+    <a href={buildHomeSectionPath(id)} onClick={handleClick} className={className}>
       {children}
     </a>
   );

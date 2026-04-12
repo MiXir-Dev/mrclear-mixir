@@ -6,6 +6,7 @@ import {
   INDEXABLE_SERVICE_AREA_SLUGS,
   SERVICE_AREAS,
 } from "./src/consts/service-areas";
+import { PRIVACY_PATH, QUOTE_PATH } from "./src/consts/paths";
 
 const resolvedPort = Number(process.env.VITE_PORT ?? "8080");
 const devPort = Number.isFinite(resolvedPort) ? resolvedPort : 8080;
@@ -27,8 +28,8 @@ export default defineConfig({
     sitemapPlugin({
       hostname: "https://mrclear.ca",
       dynamicRoutes: [
-        "/soumission",
-        "/confidentialite",
+        QUOTE_PATH,
+        PRIVACY_PATH,
         ...indexableServiceAreaPaths,
       ],
       changefreq: "monthly",

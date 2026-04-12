@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { PRIVACY_PATH } from "@/consts/paths";
 
 interface FooterBottomProps {
   currentYear: number;
@@ -15,7 +16,7 @@ const FooterBottom = ({ currentYear }: FooterBottomProps) => {
       </p>
       <div className="mt-4 md:mt-0">
         <Link
-          to="/confidentialite"
+          to={PRIVACY_PATH}
           className="opacity-75 hover:opacity-100 transition-opacity text-sm"
         >
           Politique de confidentialité

@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { HOME_PATH } from "@/consts/paths";
 import { Link } from "react-router-dom";
 
 const Privacy = () => {
@@ -77,7 +78,7 @@ const Privacy = () => {
 
             <div className="pt-8">
               <Link
-                to="/"
+                to={HOME_PATH}
                 className="text-brand-blue hover:text-brand-darkBlue transition-colors"
               >
                 &larr; Retour à l’accueil

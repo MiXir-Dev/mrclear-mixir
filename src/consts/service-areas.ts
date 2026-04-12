@@ -1,3 +1,8 @@
+import {
+  SERVICE_AREA_PATH_PREFIX,
+  buildServiceAreaPath,
+} from "./paths";
+
 export type ServiceAreaSlug =
   | "laval"
   | "montreal"
@@ -13,24 +18,20 @@ export type ServiceAreaSlug =
 export interface ServiceArea {
   slug: ServiceAreaSlug;
   name: string;
-  path: `/lavage-de-vitres-${ServiceAreaSlug}`;
+  path: `${typeof SERVICE_AREA_PATH_PREFIX}${ServiceAreaSlug}`;
 }
 
 export const SERVICE_AREAS: ServiceArea[] = [
-  { slug: "laval", name: "Laval", path: "/lavage-de-vitres-laval" },
-  { slug: "montreal", name: "Montréal", path: "/lavage-de-vitres-montreal" },
-  { slug: "repentigny", name: "Repentigny", path: "/lavage-de-vitres-repentigny" },
-  { slug: "terrebonne", name: "Terrebonne", path: "/lavage-de-vitres-terrebonne" },
-  { slug: "mascouche", name: "Mascouche", path: "/lavage-de-vitres-mascouche" },
-  { slug: "assomption", name: "L'Assomption", path: "/lavage-de-vitres-assomption" },
-  { slug: "boisbriand", name: "Boisbriand", path: "/lavage-de-vitres-boisbriand" },
-  { slug: "lorraine", name: "Lorraine", path: "/lavage-de-vitres-lorraine" },
-  { slug: "rosemere", name: "Rosemère", path: "/lavage-de-vitres-rosemere" },
-  {
-    slug: "bois-des-filion",
-    name: "Bois-des-Filion",
-    path: "/lavage-de-vitres-bois-des-filion",
-  },
+  { slug: "laval", name: "Laval", path: buildServiceAreaPath("laval") },
+  { slug: "montreal", name: "Montréal", path: buildServiceAreaPath("montreal") },
+  { slug: "repentigny", name: "Repentigny", path: buildServiceAreaPath("repentigny") },
+  { slug: "terrebonne", name: "Terrebonne", path: buildServiceAreaPath("terrebonne") },
+  { slug: "mascouche", name: "Mascouche", path: buildServiceAreaPath("mascouche") },
+  { slug: "assomption", name: "L'Assomption", path: buildServiceAreaPath("assomption") },
+  { slug: "boisbriand", name: "Boisbriand", path: buildServiceAreaPath("boisbriand") },
+  { slug: "lorraine", name: "Lorraine", path: buildServiceAreaPath("lorraine") },
+  { slug: "rosemere", name: "Rosemère", path: buildServiceAreaPath("rosemere") },
+  { slug: "bois-des-filion", name: "Bois-des-Filion", path: buildServiceAreaPath("bois-des-filion"), },
 ];
 
 // Roll out local SEO gradually: phase 1 towns go indexable first.

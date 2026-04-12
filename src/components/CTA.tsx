@@ -8,9 +8,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useLocation, useNavigate } from "react-router-dom";
+import { QUOTE_PATH } from "@/consts/paths";
 import { DEFAULT_HOME_COPY } from "@/consts/service-area-content";
 import {
-  QUOTE_PATH,
   openPathInNewTab,
   shouldOpenQuoteInNewTab,
 } from "@/lib/navigation-behavior";

@@ -1,4 +1,5 @@
 import { ServiceArea } from "@/consts/service-areas";
+import { QUOTE_PATH } from "@/consts/paths";
 
 export const FOOTER_SERVICES = [
   "Nettoyage de vitres intérieur & extérieur",
@@ -8,7 +9,7 @@ export const FOOTER_SERVICES = [
 
 export const FOOTER_QUICK_LINKS = [
   { type: "section", id: "pourquoi-nous", label: "Pourquoi nous choisir" },
-  { type: "route", to: "/soumission", label: "Demande de devis" },
+  { type: "route", to: QUOTE_PATH, label: "Demande de devis" },
   { type: "section", id: "faq", label: "FAQ" },
   { type: "section", id: "contact", label: "Contact" },
 ] as const;
