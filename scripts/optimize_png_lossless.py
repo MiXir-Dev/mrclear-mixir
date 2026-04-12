@@ -10,6 +10,7 @@ from pathlib import Path
 import struct
 import sys
 import tempfile
+import time
 import zlib
 
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
@@ -79,34 +80,40 @@ def encode_chunks(chunks: list[tuple[bytes, bytes]]) -> bytes:
   return bytes(out)
 
 
-def recompress_idat(idat_data: bytes) -> bytes:
+def recompress_idat(idat_data: bytes, thorough: bool) -> bytes:
   raw_data = zlib.decompress(idat_data)
   best = idat_data
 
-  strategies = (
-    zlib.Z_DEFAULT_STRATEGY,
-    zlib.Z_FILTERED,
-    zlib.Z_HUFFMAN_ONLY,
-    zlib.Z_RLE,
-  )
+  passes: list[tuple[int, int]] = [
+    (9, zlib.Z_DEFAULT_STRATEGY),
+    (9, zlib.Z_FILTERED),
+  ]
+  if thorough:
+    passes.extend(
+      [
+        (8, zlib.Z_DEFAULT_STRATEGY),
+        (8, zlib.Z_FILTERED),
+        (9, zlib.Z_HUFFMAN_ONLY),
+        (9, zlib.Z_RLE),
+      ]
+    )
 
-  for mem_level in (9, 8):
-    for strategy in strategies:
-      compressor = zlib.compressobj(
-        level=zlib.Z_BEST_COMPRESSION,
-        method=zlib.DEFLATED,
-        wbits=15,
-        memLevel=mem_level,
-        strategy=strategy,
-      )
-      candidate = compressor.compress(raw_data) + compressor.flush()
-      if len(candidate) < len(best):
-        best = candidate
+  for mem_level, strategy in passes:
+    compressor = zlib.compressobj(
+      level=zlib.Z_BEST_COMPRESSION,
+      method=zlib.DEFLATED,
+      wbits=15,
+      memLevel=mem_level,
+      strategy=strategy,
+    )
+    candidate = compressor.compress(raw_data) + compressor.flush()
+    if len(candidate) < len(best):
+      best = candidate
 
   return best
 
 
-def optimize_png(path: Path, dry_run: bool) -> OptimizeResult:
+def optimize_png(path: Path, dry_run: bool, thorough: bool) -> OptimizeResult:
   original = path.read_bytes()
   before_size = len(original)
 
@@ -116,7 +123,7 @@ def optimize_png(path: Path, dry_run: bool) -> OptimizeResult:
     if not idat_payload:
       raise ValueError("PNG has no IDAT chunk.")
 
-    optimized_idat = recompress_idat(idat_payload)
+    optimized_idat = recompress_idat(idat_payload, thorough=thorough)
     if len(optimized_idat) >= len(idat_payload):
       return OptimizeResult(path=path, before_size=before_size, after_size=before_size, changed=False)
 
@@ -174,6 +181,11 @@ def main() -> int:
     action="store_true",
     help="Show what would change without writing files.",
   )
+  parser.add_argument(
+    "--thorough",
+    action="store_true",
+    help="Try additional compression strategies (slower, sometimes smaller).",
+  )
   args = parser.parse_args()
 
   requested_root = Path(args.root)
@@ -198,14 +210,17 @@ def main() -> int:
   changed_count = 0
   error_count = 0
 
-  for png_file in png_files:
-    result = optimize_png(png_file, dry_run=args.dry_run)
+  for index, png_file in enumerate(png_files, start=1):
+    print(f"[{index}/{len(png_files)}] Processing {png_file}...", flush=True)
+    started = time.perf_counter()
+    result = optimize_png(png_file, dry_run=args.dry_run, thorough=args.thorough)
+    elapsed = time.perf_counter() - started
     total_before += result.before_size
     total_after += result.after_size
 
     if result.error:
       error_count += 1
-      print(f"ERROR  {png_file}: {result.error}")
+      print(f"ERROR  {png_file}: {result.error} ({elapsed:.2f}s)")
       continue
 
     if result.changed:
@@ -213,7 +228,9 @@ def main() -> int:
       saved = result.before_size - result.after_size
       pct = (saved / result.before_size * 100) if result.before_size else 0.0
       action = "WOULD OPTIMIZE" if args.dry_run else "OPTIMIZED"
-      print(f"{action}  {png_file}  -{saved} bytes ({pct:.2f}%)")
+      print(f"{action}  {png_file}  -{saved} bytes ({pct:.2f}%) ({elapsed:.2f}s)")
+    else:
+      print(f"UNCHANGED  {png_file} ({elapsed:.2f}s)")
 
   total_saved = total_before - total_after
   total_pct = (total_saved / total_before * 100) if total_before else 0.0
