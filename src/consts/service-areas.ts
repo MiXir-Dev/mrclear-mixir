@@ -33,6 +33,17 @@ export const SERVICE_AREAS: ServiceArea[] = [
   },
 ];
 
+// Roll out local SEO gradually: phase 1 towns go indexable first.
+export const STRATEGY_B_PHASE1_SERVICE_AREA_SLUGS: ServiceAreaSlug[] = [
+  "montreal",
+  "laval",
+  "terrebonne",
+  "repentigny",
+  "mascouche",
+];
+
+export const INDEXABLE_SERVICE_AREA_SLUGS = STRATEGY_B_PHASE1_SERVICE_AREA_SLUGS;
+
 export const SERVICE_AREAS_BY_SLUG: Record<ServiceAreaSlug, ServiceArea> =
   SERVICE_AREAS.reduce((acc, area) => {
     acc[area.slug] = area;

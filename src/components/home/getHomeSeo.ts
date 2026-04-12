@@ -2,7 +2,9 @@ import { ServiceAreaPageContent } from "@/consts/service-area-content";
 import {
   BASE_LOCAL_BUSINESS_STRUCTURED_DATA,
   HOME_SEO_DEFAULT,
+  SITE_URL,
 } from "@/consts/seo";
+import { INDEXABLE_SERVICE_AREA_SLUGS } from "@/consts/service-areas";
 import {
   localizeMetaDescription,
   localizeMetaTitle,
@@ -37,13 +39,22 @@ const withCityKeywords = (city: string) => {
   return [...LOCAL_KEYWORDS, ...localizedTerms, city, "Rive-Nord"].join(", ");
 };
 
+const INDEXABLE_SERVICE_AREA_SET = new Set(INDEXABLE_SERVICE_AREA_SLUGS);
+
 export const getHomeSeo = (
   serviceArea?: ServiceAreaPageContent
 ): HomeSeoPayload => {
-  // Temporary SEO consolidation: service-area variants reuse the homepage and
-  // should point canonical signals to the main URL.
-  const canonicalUrl = HOME_SEO_DEFAULT.canonicalUrl;
-  const robots = serviceArea ? "noindex,follow" : "index,follow";
+  const isIndexableServiceArea = Boolean(
+    serviceArea && INDEXABLE_SERVICE_AREA_SET.has(serviceArea.slug)
+  );
+  const canonicalUrl = serviceArea && isIndexableServiceArea
+    ? `${SITE_URL}${serviceArea.path}`
+    : HOME_SEO_DEFAULT.canonicalUrl;
+  const robots = serviceArea
+    ? isIndexableServiceArea
+      ? "index,follow"
+      : "noindex,follow"
+    : "index,follow";
 
   const description = localizeMetaDescription(
     HOME_SEO_DEFAULT.description,
